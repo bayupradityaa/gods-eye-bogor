@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 /* ═══════════════════════════════════════════
    THEME TOKENS — Light (Default)
    ═══════════════════════════════════════════ */
@@ -7,29 +9,49 @@
   color-scheme: light;
 
   /* Backgrounds */
-  --bg: #F8F9FB;
-  --bg-secondary: #F3F5F7;
+  --bg: #F8FAFC;
+  --bg-secondary: #F1F5F9;
 
   /* Surfaces */
   --surface: #FFFFFF;
   --surface-elevated: #FFFFFF;
-  --surface-muted: #F1F3F5;
+  --surface-muted: #F8FAFC;
 
   /* Borders */
-  --border: #E4E7EC;
-  --border-hover: #D0D5DD;
-  --border-strong: #D0D5DD;
+  --border: #E2E8F0;
+  --border-hover: #CBD5E1;
+  --border-strong: #94A3B8;
 
   /* Typography */
   --text: #111827;
   --text-secondary: #667085;
-  --text-muted: #98A2B3;
+  --text-muted: #9CA3AF;
 
-  /* Accent */
-  --accent: #16A34A;
-  --accent-dim: rgba(22, 163, 74, 0.10);
-  --accent-soft: rgba(22, 163, 74, 0.10);
-  --accent-cyan: #0891B2;
+  /* Brand Colors — Bogor Blue */
+  --bogor-blue: #1479A6;
+  --bogor-blue-dim: rgba(20, 121, 166, 0.10);
+  --bogor-blue-soft: rgba(20, 121, 166, 0.15);
+  
+  /* Accent — Bogor Orange */
+  --bogor-orange: #F28C28;
+  --bogor-orange-dim: rgba(242, 140, 40, 0.10);
+  --bogor-orange-soft: rgba(242, 140, 40, 0.15);
+
+  /* Status — Live Green */
+  --live-green: #16A34A;
+  --live-green-dim: rgba(22, 163, 74, 0.10);
+  --live-green-soft: rgba(22, 163, 74, 0.15);
+
+  /* Aliases for backward compatibility */
+  --primary: var(--bogor-blue);
+  --primary-dim: var(--bogor-blue-dim);
+  --primary-soft: var(--bogor-blue-soft);
+  --motion: var(--bogor-orange);
+  --motion-dim: var(--bogor-orange-dim);
+  --motion-soft: var(--bogor-orange-soft);
+  --accent: var(--live-green);
+  --accent-dim: var(--live-green-dim);
+  --accent-soft: var(--live-green-soft);
 
   /* Semantic */
   --danger: #DC2626;
@@ -48,8 +70,8 @@
   --hero-gradient-via: #F7F8FA;
   --hero-gradient-to: #F7F8FA;
   --hero-grid-color: rgba(0, 0, 0, 0.04);
-  --hero-scanline-color: rgba(22, 163, 74, 0.04);
-  --hero-glow-color: rgba(22, 163, 74, 0.06);
+  --hero-scanline-color: rgba(20, 121, 166, 0.04);
+  --hero-glow-color: rgba(20, 121, 166, 0.06);
   --hero-visual-bg-from: #F1F3F5;
   --hero-visual-bg-to: #E8EAED;
   --hero-visual-border: #E4E7EC;
@@ -71,7 +93,7 @@
   --palette-backdrop: rgba(0, 0, 0, 0.30);
   --palette-bg: #FFFFFF;
   --palette-border: #E4E7EC;
-  --palette-hover: rgba(22, 163, 74, 0.06);
+  --palette-hover: rgba(20, 121, 166, 0.06);
 
   /* Viewer */
   --viewer-backdrop: rgba(0, 0, 0, 0.70);
@@ -81,14 +103,14 @@
   /* Filter */
   --filter-bg: rgba(0, 0, 0, 0.03);
   --filter-border: #E4E7EC;
-  --filter-hover-bg: rgba(0, 0, 0, 0.06);
-  --filter-active-bg: rgba(22, 163, 74, 0.10);
-  --filter-active-border: rgba(22, 163, 74, 0.25);
+  --filter-hover-bg: rgba(242, 140, 40, 0.06);
+  --filter-active-bg: rgba(20, 121, 166, 0.08);
+  --filter-active-border: rgba(20, 121, 166, 0.25);
 
   /* Search */
   --search-bg: #FFFFFF;
   --search-border: #E4E7EC;
-  --search-focus-border: rgba(22, 163, 74, 0.30);
+  --search-focus-border: rgba(20, 121, 166, 0.30);
   --search-focus-bg: #FFFFFF;
   --search-kbd-bg: rgba(0, 0, 0, 0.04);
   --search-kbd-border: rgba(0, 0, 0, 0.08);
@@ -124,7 +146,7 @@
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
-  --shadow-glow: 0 0 16px rgba(22, 163, 74, 0.10);
+  --shadow-glow: 0 0 16px rgba(20, 121, 166, 0.10);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --transition-fast: 150ms var(--ease-out-expo);
@@ -139,33 +161,53 @@
   color-scheme: dark;
 
   /* Backgrounds */
-  --bg: #07090D;
-  --bg-secondary: #0C1017;
+  --bg: #0B1121;
+  --bg-secondary: #0F172A;
 
   /* Surfaces */
-  --surface: #11161F;
-  --surface-elevated: #161D27;
-  --surface-muted: #1B2430;
+  --surface: #1E293B;
+  --surface-elevated: #334155;
+  --surface-muted: #1E293B;
 
   /* Borders */
-  --border: rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(255, 255, 255, 0.12);
-  --border-strong: rgba(255, 255, 255, 0.14);
+  --border: rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(255, 255, 255, 0.15);
+  --border-strong: rgba(255, 255, 255, 0.2);
 
   /* Typography */
-  --text: #F5F7FA;
-  --text-secondary: #9AA4B2;
-  --text-muted: #667085;
+  --text: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
 
-  /* Accent */
-  --accent: #4ADE80;
-  --accent-dim: rgba(74, 222, 128, 0.15);
-  --accent-soft: rgba(74, 222, 128, 0.10);
-  --accent-cyan: #22D3EE;
+  /* Brand Colors — Bogor Blue (keep brand identity in dark) */
+  --bogor-blue: #1479A6;
+  --bogor-blue-dim: rgba(20, 121, 166, 0.12);
+  --bogor-blue-soft: rgba(20, 121, 166, 0.18);
+  
+  /* Accent — Bogor Orange (keep brand identity in dark) */
+  --bogor-orange: #F28C28;
+  --bogor-orange-dim: rgba(242, 140, 40, 0.12);
+  --bogor-orange-soft: rgba(242, 140, 40, 0.18);
+
+  /* Status — Live Green (keep consistent in dark) */
+  --live-green: #16A34A;
+  --live-green-dim: rgba(22, 163, 74, 0.12);
+  --live-green-soft: rgba(22, 163, 74, 0.18);
+
+  /* Aliases for backward compatibility */
+  --primary: var(--bogor-blue);
+  --primary-dim: var(--bogor-blue-dim);
+  --primary-soft: var(--bogor-blue-soft);
+  --motion: var(--bogor-orange);
+  --motion-dim: var(--bogor-orange-dim);
+  --motion-soft: var(--bogor-orange-soft);
+  --accent: var(--live-green);
+  --accent-dim: var(--live-green-dim);
+  --accent-soft: var(--live-green-soft);
 
   /* Semantic */
-  --danger: #FB5A5A;
-  --warning: #FBBF24;
+  --danger: #EF4444;
+  --warning: #F59E0B;
 
   /* Navbar */
   --navbar-bg: rgba(7, 9, 13, 0.80);
@@ -180,8 +222,8 @@
   --hero-gradient-via: #07090D;
   --hero-gradient-to: #07090D;
   --hero-grid-color: rgba(255, 255, 255, 0.03);
-  --hero-scanline-color: rgba(74, 222, 128, 0.015);
-  --hero-glow-color: rgba(74, 222, 128, 0.05);
+  --hero-scanline-color: rgba(20, 121, 166, 0.03);
+  --hero-glow-color: rgba(20, 121, 166, 0.05);
   --hero-visual-bg-from: #11161F;
   --hero-visual-bg-to: #0C1017;
   --hero-visual-border: rgba(255, 255, 255, 0.06);
@@ -203,7 +245,7 @@
   --palette-backdrop: rgba(0, 0, 0, 0.70);
   --palette-bg: #11161F;
   --palette-border: rgba(255, 255, 255, 0.08);
-  --palette-hover: rgba(74, 222, 128, 0.06);
+  --palette-hover: rgba(20, 121, 166, 0.10);
 
   /* Viewer */
   --viewer-backdrop: rgba(0, 0, 0, 0.90);
@@ -213,14 +255,14 @@
   /* Filter */
   --filter-bg: rgba(255, 255, 255, 0.03);
   --filter-border: rgba(255, 255, 255, 0.06);
-  --filter-hover-bg: rgba(255, 255, 255, 0.06);
-  --filter-active-bg: rgba(74, 222, 128, 0.15);
-  --filter-active-border: rgba(74, 222, 128, 0.20);
+  --filter-hover-bg: rgba(242, 140, 40, 0.10);
+  --filter-active-bg: rgba(20, 121, 166, 0.14);
+  --filter-active-border: rgba(20, 121, 166, 0.30);
 
   /* Search */
   --search-bg: #11161F;
   --search-border: rgba(255, 255, 255, 0.06);
-  --search-focus-border: rgba(74, 222, 128, 0.30);
+  --search-focus-border: rgba(20, 121, 166, 0.30);
   --search-focus-bg: #161D27;
   --search-kbd-bg: rgba(255, 255, 255, 0.05);
   --search-kbd-border: rgba(255, 255, 255, 0.10);
@@ -252,7 +294,7 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 20px rgba(74, 222, 128, 0.08);
+  --shadow-glow: 0 0 20px rgba(20, 121, 166, 0.08);
 }
 
 /* ═══════════════════════════════════════════
@@ -267,8 +309,9 @@
   --color-text: var(--text);
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
+  --color-primary: var(--primary);
+  --color-motion: var(--motion);
   --color-accent: var(--accent);
-  --color-accent-cyan: var(--accent-cyan);
   --color-danger: var(--danger);
 }
 
@@ -313,7 +356,7 @@ body {
   }
 }
 
-::selection { background: var(--accent-dim); color: var(--accent); }
+::selection { background: var(--primary-dim); color: var(--primary); }
 
 /* ═══════════════════════════════════════════
    SCROLLBAR
@@ -366,4 +409,34 @@ img,
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ═══════════════════════════════════════════
+   MOTION LANGUAGE
+   ═══════════════════════════════════════════ */
+.motion-divider-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+  opacity: 0; /* will be animated by GSAP */
+}
+
+.motion-line {
+  height: 1px;
+  background: var(--motion);
+  flex-grow: 1;
+  max-width: 0; /* will be animated */
+  transition: max-width 1s ease-out;
+}
+
+.motion-arrow {
+  color: var(--motion);
+  font-size: 14px;
+  line-height: 1;
+  margin-left: 8px;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.5s ease-out 0.5s;
 }

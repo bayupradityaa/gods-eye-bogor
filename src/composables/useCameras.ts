@@ -74,6 +74,7 @@ export function useCameras() {
 
   return {
     cameras: CAMERAS,
+    allFiltered,
     filteredCameras,
     totalResults,
     canLoadMore,

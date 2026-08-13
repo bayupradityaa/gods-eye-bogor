@@ -23,12 +23,27 @@ onMounted(() => {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   if (prefersReducedMotion) return
 
-  gsap.from('.monitoring-section .monitoring-content', {
-    scrollTrigger: { trigger: '.monitoring-section', start: 'top 90%' },
-    opacity: 0,
-    y: 20,
-    duration: 0.8,
-    ease: 'power3.out',
+  const ctx = gsap.context(() => {
+    // Reveal the section text and wrappers first
+    gsap.from('.monitoring-content > div:not(.camera-card-wrapper)', {
+      scrollTrigger: { trigger: '.monitoring-section', start: 'top 90%' },
+      opacity: 0,
+      y: 20,
+      duration: 0.8,
+      ease: 'power3.out',
+    })
+
+    // Batch animate camera cards identically to Hero and CameraGrid
+    ScrollTrigger.batch('.monitoring-section .camera-card', {
+      interval: 0.1,
+      batchMax: 4,
+      onEnter: (batch) => {
+        gsap.fromTo(batch, 
+          { opacity: 0, clipPath: 'inset(0% 0% 100% 0%)', scale: 1.04 }, 
+          { opacity: 1, clipPath: 'inset(0% 0% 0% 0%)', scale: 1, stagger: 0.08, duration: 0.9, ease: 'cubic-bezier(0.16, 1, 0.3, 1)', overwrite: 'auto' }
+        )
+      }
+    })
   })
 })
 </script>
@@ -41,7 +56,7 @@ onMounted(() => {
       <template v-if="!hasPreferences">
         <div class="empty-state-compact flex flex-col sm:flex-row items-center justify-between gap-6 rounded-2xl px-6 py-6 sm:px-8 border" style="background: var(--surface-muted); border-color: var(--border);">
           <div class="flex items-center gap-4">
-            <div class="empty-icon shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-white dark:bg-black/20 border" style="border-color: var(--border);">
+            <div class="empty-icon shrink-0 w-10 h-10 rounded-full flex items-center justify-center border" style="border-color: var(--border); background: var(--surface-elevated);">
               <Star :size="16" :stroke-width="2" style="color: var(--text-muted);" />
             </div>
             <div>
@@ -84,7 +99,7 @@ onMounted(() => {
               <div
                 v-for="cam in favoriteCameraList"
                 :key="cam.id"
-                class="shrink-0 w-[280px]"
+                class="shrink-0 w-[280px] sm:w-[320px]"
               >
                 <CameraCard :camera="cam" @select="emit('select', cam)" />
               </div>

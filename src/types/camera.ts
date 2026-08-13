@@ -13,6 +13,8 @@ export interface Camera {
   name: string
   stream: string
   category: CameraCategory
+  latitude?: number
+  longitude?: number
 }
 
 export interface CameraViewerState {

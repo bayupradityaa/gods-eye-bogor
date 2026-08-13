@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import type { Camera } from '@/types/camera'
-import { formatId, CATEGORY_COLORS } from '@/lib/utils'
-import { Star } from '@lucide/vue'
+import { formatId } from '@/lib/utils'
+import { Star, MapPin } from '@lucide/vue'
 import { useCameraPreferences } from '@/composables/useCameraPreferences'
 
 const props = defineProps<{
   camera: Camera
   showFavorite?: boolean
-  featured?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -17,7 +16,6 @@ const emit = defineEmits<{
 
 const { isFavorite, toggleFavorite } = useCameraPreferences()
 
-const hasTouch = typeof window !== 'undefined' && 'ontouchstart' in window
 const imageError = ref(false)
 
 const snapshotUrl = computed(() => {
@@ -32,93 +30,70 @@ function onFavoriteClick(e: Event) {
 
 <template>
   <div
-    class="camera-card group relative overflow-hidden cursor-pointer flex flex-col h-full bg-surface"
-    :class="[featured ? 'rounded-[20px]' : 'rounded-2xl']"
+    class="camera-card group relative flex flex-col h-full overflow-hidden rounded-xl border shadow-[0_4px_20px_rgba(15,23,42,0.06)] dark:shadow-none cursor-pointer"
+    style="background: var(--surface-elevated); border-color: var(--border);"
     @click="emit('select')"
   >
-    <!-- Preview Area -->
-    <div 
-      class="card-preview relative overflow-hidden bg-black flex-1 min-h-0"
-      :class="[featured ? 'aspect-[16/10] sm:aspect-video' : 'aspect-video']"
-    >
-      <!-- Image Layer -->
+    <!-- Top Image Section -->
+    <div class="relative aspect-video w-full overflow-hidden bg-[#0C1017]">
+      <!-- Snapshot Image -->
       <img
         v-if="!imageError"
         :src="snapshotUrl"
         :alt="`CCTV ${camera.name}`"
         loading="lazy"
-        class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02] z-0"
+        class="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
         @error="imageError = true"
       />
 
-      <!-- Fallback: Intentional CCTV Placeholder -->
-      <div v-else class="absolute inset-0 z-0 bg-[#07090C] font-mono transition-transform duration-300 ease-out group-hover:scale-[1.02]">
-        <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
-        <div class="absolute top-1/2 left-0 w-full h-[1px] bg-white/[0.04]"></div>
-        <div class="absolute left-1/2 top-0 w-[1px] h-full bg-white/[0.04]"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 border border-white/[0.1] rounded-full"></div>
-        
-        <div class="absolute inset-4 flex flex-col justify-between pointer-events-none">
-          <div class="text-[10px] tracking-widest text-white/40 uppercase">CAM {{ String(camera.id).padStart(3, '0') }}</div>
-          <div class="flex flex-col items-center justify-center flex-1">
-            <span class="text-[10px] tracking-[0.2em] font-medium text-white/20 uppercase">Bogor Live</span>
-          </div>
-          <div class="flex justify-between items-end">
-            <div class="text-[9px] tracking-widest text-white/30 uppercase tabular-nums">06°35′S 106°48′E</div>
-            <div class="text-[9px] tracking-[0.2em] font-semibold text-accent uppercase flex items-center gap-1.5 opacity-80">
-              <span class="w-1.5 h-1.5 bg-accent rounded-full animate-pulse"></span>
-              STREAM TERSEDIA
-            </div>
-          </div>
-        </div>
+      <!-- Fallback Signal Error -->
+      <div v-else class="h-full w-full bg-[#070A10] font-mono flex flex-col items-center justify-center text-white/40 text-[10px] tracking-widest uppercase">
+        <div class="absolute inset-0 opacity-[0.04]" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+        <span>CAM {{ String(camera.id).padStart(3, '0') }}</span>
+        <span class="mt-1 text-[9px] text-red-400/80">NO SIGNAL</span>
       </div>
 
-      <!-- Live badge (Top left, shown only if image loads, otherwise placeholder has its own) -->
-      <div v-if="!imageError" class="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-2 py-1 rounded-md backdrop-blur-md bg-black/40 border border-white/10">
-        <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background: var(--accent);"></span>
-        <span class="text-[9px] tracking-[0.2em] uppercase font-bold text-white leading-none pt-px">Live</span>
+      <!-- Subtle Bottom Gradient for Text Legibility -->
+      <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/45 via-black/10 to-transparent pointer-events-none"></div>
+
+      <!-- Live Indicator (Bottom Left) -->
+      <div class="absolute bottom-3 left-3 flex items-center gap-1.5 z-10 pointer-events-none">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#16A34A] animate-pulse"></span>
+        <span class="text-[10px] sm:text-[11px] font-semibold tracking-[0.08em] text-[#16A34A] uppercase font-['Plus_Jakarta_Sans']">LIVE</span>
       </div>
 
-      <!-- Overlay gradient -->
-      <div v-if="!imageError" class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none z-[5]"></div>
+      <!-- Favorite Button (Bottom Right) -->
+      <button
+        v-if="showFavorite !== false"
+        class="btn-fav absolute bottom-2 right-2 z-20 flex items-center justify-center w-8 h-8 rounded-full"
+        :class="isFavorite(camera.id) ? 'text-[#F28C28]' : 'text-white/40'"
+        :aria-label="isFavorite(camera.id) ? `Remove ${camera.name} from favorites` : `Add ${camera.name} to favorites`"
+        @click="onFavoriteClick"
+      >
+        <Star
+          :size="15"
+          :stroke-width="isFavorite(camera.id) ? 2.5 : 2"
+          :fill="isFavorite(camera.id) ? 'currentColor' : 'none'"
+        />
+      </button>
 
-      <!-- Bottom metadata inside preview (only if image loads) -->
-      <div v-if="!imageError" class="absolute bottom-3 left-3 right-3 z-10 flex justify-between items-end pointer-events-none">
-        <div>
-          <p class="text-[9px] tracking-widest text-white/50 tabular-nums uppercase mb-0.5">CAM {{ String(camera.id).padStart(3, '0') }}</p>
-          <p class="text-[9px] tracking-widest text-white/30 tabular-nums uppercase">06°35′S 106°48′E</p>
-        </div>
-      </div>
+      <!-- Orange Interaction Line -->
+      <div class="absolute bottom-0 left-0 h-[2px] bg-[#F28C28] w-0 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:w-full z-20"></div>
     </div>
 
-    <!-- Info Area -->
-    <div class="p-3 sm:p-4 border-t border-border flex flex-col justify-between shrink-0 bg-surface z-20">
-      <div class="flex items-start justify-between gap-3">
-        <div class="min-w-0 flex-1">
-          <h3 class="text-[13px] sm:text-sm font-medium transition-colors group-hover:text-accent leading-snug truncate" style="color: var(--text);">
-            {{ camera.name }}
-          </h3>
-          <div class="flex items-center gap-2 mt-1">
-            <span class="text-[10px] tracking-wider uppercase font-medium" :style="{ color: CATEGORY_COLORS[camera.category] }">
-              {{ camera.category }}
-            </span>
-          </div>
-        </div>
+    <!-- Content Section -->
+    <div class="flex flex-col flex-1 p-4 sm:p-[18px]">
+      <h3 class="text-[16px] sm:text-[18px] font-semibold font-['Manrope'] transition-colors duration-500 group-hover:text-[var(--primary)] line-clamp-1 mb-[6px] flex items-center gap-2" style="color: var(--text);">
+        <MapPin class="h-[14px] w-[14px] text-[var(--primary)] shrink-0" />
+        {{ camera.name }}
+      </h3>
 
-        <!-- Favorite button -->
-        <button
-          v-if="showFavorite !== false"
-          class="fav-btn shrink-0 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 sm:opacity-0 transition-all duration-200 ease-out"
-          :class="{ 'fav-active': isFavorite(camera.id), 'opacity-100': isFavorite(camera.id) || hasTouch }"
-          :aria-label="isFavorite(camera.id) ? `Remove ${camera.name} from favorites` : `Add ${camera.name} to favorites`"
-          @click="onFavoriteClick"
-        >
-          <Star
-            :size="14"
-            :stroke-width="2.5"
-            :fill="isFavorite(camera.id) ? 'currentColor' : 'none'"
-          />
-        </button>
+      <div class="mt-auto">
+        <div class="border-t w-full mb-[14px]" style="border-color: var(--border);"></div>
+        <div class="flex items-center justify-between font-['Plus_Jakarta_Sans'] text-[11px] sm:text-[12px]">
+          <span class="font-semibold uppercase tracking-wide" style="color: var(--primary);">CAM {{ String(camera.id).padStart(3, '0') }}</span>
+          <span class="font-normal" style="color: var(--text-muted);">06°35′S 106°48′E</span>
+        </div>
       </div>
     </div>
   </div>
@@ -126,54 +101,33 @@ function onFavoriteClick(e: Event) {
 
 <style scoped>
 .camera-card {
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-  transition: transform 300ms cubic-bezier(0.25, 1, 0.5, 1), box-shadow 300ms cubic-bezier(0.25, 1, 0.5, 1), border-color 300ms ease;
-  will-change: transform;
+  transition: all 600ms cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 .camera-card:hover {
-  border-color: var(--border-hover);
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
 }
 
-.fav-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  min-width: 44px;
-  min-height: 44px;
-  padding: 7px;
-  border-radius: 8px;
-  color: var(--text-muted);
-  cursor: pointer;
-  background: transparent;
-  border: none;
-}
-.fav-btn:hover {
-  color: var(--text);
-  background: var(--surface-muted);
-}
-.fav-btn:active {
-  transform: scale(0.9);
-}
-.fav-btn:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-.fav-active, .fav-active:hover {
-  color: var(--accent);
-  background: var(--accent-soft);
+.dark .camera-card:hover {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
-@keyframes favPop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-  100% { transform: scale(1); }
+.camera-card:active {
+  transform: translateY(-2px);
 }
-.fav-active svg {
-  animation: favPop 200ms cubic-bezier(0.25, 1, 0.5, 1);
+
+.btn-fav {
+  transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-fav:hover {
+  transform: scale(1.15);
+  color: #F28C28;
+}
+
+.btn-fav:active {
+  transform: scale(0.95);
 }
 </style>

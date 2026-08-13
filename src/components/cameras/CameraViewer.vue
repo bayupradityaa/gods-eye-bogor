@@ -2,6 +2,8 @@
 import { ref, watch, onUnmounted, nextTick } from 'vue'
 import Hls from 'hls.js'
 import type { Camera } from '@/types/camera'
+import { X, Play, Pause, Volume2, VolumeX, Maximize, RotateCw, Star, MapPin } from '@lucide/vue'
+import { useCameraPreferences } from '@/composables/useCameraPreferences'
 
 const props = defineProps<{
   camera: Camera | null
@@ -12,9 +14,12 @@ const emit = defineEmits<{
   close: []
 }>()
 
+const { isFavorite, toggleFavorite } = useCameraPreferences()
+
 const videoRef = ref<HTMLVideoElement | null>(null)
 const hls = ref<Hls | null>(null)
 const isPlaying = ref(false)
+const isMuted = ref(true)
 const isLoading = ref(true)
 const hasError = ref(false)
 
@@ -80,6 +85,21 @@ function closeViewer() {
   emit('close')
 }
 
+function togglePlay() {
+  if (!videoRef.value) return
+  if (isPlaying.value) {
+    videoRef.value.pause()
+  } else {
+    videoRef.value.play().catch(() => {})
+  }
+}
+
+function toggleMute() {
+  if (!videoRef.value) return
+  videoRef.value.muted = !videoRef.value.muted
+  isMuted.value = videoRef.value.muted
+}
+
 // Fullscreen logic
 function toggleFullscreen() {
   if (!videoRef.value) return
@@ -117,45 +137,60 @@ onUnmounted(() => {
     <Transition name="viewer">
       <div
         v-if="open && camera"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-12"
+        class="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 lg:p-8"
       >
         <!-- Cinematic Backdrop -->
-        <div class="absolute inset-0 bg-[#07090D]/95 backdrop-blur-xl" @click="closeViewer"></div>
+        <div class="absolute inset-0 bg-[#05080C]/70 backdrop-blur-[8px]" @click="closeViewer"></div>
 
-        <!-- Viewer Container -->
+        <!-- Viewer Dialog Container -->
         <div 
-          class="relative w-full max-w-6xl flex flex-col bg-black rounded-2xl sm:rounded-[24px] overflow-hidden shadow-2xl border border-white/10"
-          style="max-height: calc(100vh - 48px);"
+          class="relative w-full max-w-7xl flex flex-col bg-[#0F1117] rounded-[20px] overflow-hidden shadow-[0_25px_50px_-12px_rgba(0,0,0,0.6)] border border-[rgba(255,255,255,0.08)] text-white z-10"
+          style="max-height: calc(100vh - 32px);"
         >
-          
-          <!-- Top Bar (Minimal) -->
-          <div class="absolute top-0 inset-x-0 z-20 flex items-center justify-between p-4 sm:p-6 bg-gradient-to-b from-black/80 to-transparent pointer-events-none">
-            <div class="flex items-center gap-3">
-              <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-md backdrop-blur-md bg-black/40 border border-white/10">
-                <span class="w-2 h-2 rounded-full animate-pulse bg-green-500"></span>
-                <span class="text-[10px] tracking-[0.2em] uppercase font-bold text-white">LIVE</span>
+          <!-- Header -->
+          <div class="px-5 sm:px-6 py-4 flex items-start justify-between gap-4 shrink-0">
+            <div class="flex flex-col gap-1.5 min-w-0 pt-1">
+              <div class="flex items-center gap-3">
+                <h3 class="text-[18px] sm:text-[22px] font-semibold text-[#F9FAFB] font-['Manrope'] truncate leading-tight">
+                  {{ camera.name }}
+                </h3>
+                <div class="flex items-center gap-1.5 shrink-0">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#16A34A] animate-pulse"></span>
+                  <span class="text-[10px] sm:text-[11px] font-semibold tracking-[0.08em] text-[#16A34A] uppercase font-['Plus_Jakarta_Sans']">LIVE</span>
+                </div>
               </div>
-              <p class="text-[10px] tracking-widest text-white/50 uppercase tabular-nums hidden sm:block">
-                CAM {{ String(camera.id).padStart(3, '0') }}
-              </p>
+
             </div>
-            
-            <button
-              class="w-10 h-10 rounded-full flex items-center justify-center bg-black/40 hover:bg-black/60 border border-white/10 text-white/70 hover:text-white transition-all pointer-events-auto backdrop-blur-md"
-              @click="closeViewer"
-            >
-              <span class="text-xl leading-none">✕</span>
-            </button>
+            <div class="flex items-center gap-2 shrink-0">
+              <button
+                class="btn-icon flex items-center justify-center w-[44px] h-[44px] rounded-full border border-[rgba(255,255,255,0.08)] text-[#98A2B3]"
+                :class="isFavorite(camera.id) ? 'text-[#F28C28] bg-[rgba(255,255,255,0.05)]' : 'bg-transparent'"
+                :title="isFavorite(camera.id) ? 'Hapus dari Favorit' : 'Tambah ke Favorit'"
+                :aria-label="isFavorite(camera.id) ? 'Hapus dari Favorit' : 'Tambah ke Favorit'"
+                @click="toggleFavorite(camera.id)"
+              >
+                <Star :size="18" :stroke-width="isFavorite(camera.id) ? 2.5 : 2" :fill="isFavorite(camera.id) ? 'currentColor' : 'none'" />
+              </button>
+              <button 
+                class="btn-icon flex items-center justify-center w-[44px] h-[44px] rounded-full bg-transparent text-[#98A2B3]"
+                title="Tutup"
+                aria-label="Tutup"
+                @click="closeViewer"
+              >
+                <X class="w-5 h-5" />
+              </button>
+            </div>
           </div>
 
-          <!-- Video Area -->
-          <div class="relative w-full aspect-video bg-[#0C1017]">
+          <!-- Video Screen Area -->
+          <div class="relative w-full flex-1 min-h-[200px] bg-[#080B11] flex items-center justify-center overflow-hidden">
             <video
               ref="videoRef"
-              class="w-full h-full object-contain"
+              class="w-full h-full max-h-[65vh] object-contain"
               playsinline
-              muted
+              :muted="isMuted"
               @playing="isLoading = false; isPlaying = true"
+              @pause="isPlaying = false"
               @waiting="isLoading = true"
               @error="hasError = true"
             ></video>
@@ -163,48 +198,82 @@ onUnmounted(() => {
             <!-- Loading State -->
             <div
               v-if="isLoading && !hasError"
-              class="absolute inset-0 flex flex-col items-center justify-center bg-[#0C1017]"
+              class="absolute inset-0 z-30 flex flex-col items-center justify-center bg-[#080B11]/90"
             >
-              <div class="w-8 h-8 border-2 border-white/20 border-t-green-500 rounded-full animate-spin mb-4"></div>
-              <p class="text-[10px] tracking-[0.2em] uppercase text-white/50">Menghubungkan ke kamera...</p>
+              <div class="w-8 h-8 border-2 border-[#1479A6]/20 border-t-[#1479A6] rounded-full animate-spin mb-3"></div>
+              <p class="text-[11px] tracking-widest font-['Plus_Jakarta_Sans'] uppercase text-[#98A2B3]">Menghubungkan...</p>
             </div>
 
             <!-- Error State -->
             <div
               v-if="hasError"
-              class="absolute inset-0 flex flex-col items-center justify-center bg-[#0C1017]"
+              class="absolute inset-0 z-30 flex flex-col items-center justify-center bg-[#080B11]/95"
             >
-              <span class="text-3xl mb-3 opacity-30 text-red-500">⚠</span>
-              <p class="text-xs tracking-wider text-white">Kamera tidak tersedia</p>
+              <span class="text-3xl mb-2 text-[#98A2B3]/50">⚠</span>
+              <p class="text-[13px] font-semibold tracking-wide font-['Plus_Jakarta_Sans'] text-[#F9FAFB]">Sinyal Kamera Tidak Tersedia</p>
+              <p class="text-[11px] text-[#98A2B3] font-['Plus_Jakarta_Sans'] mt-1 mb-4">Pastikan koneksi internet stabil atau coba muat ulang stream.</p>
               <button
-                class="mt-4 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-[10px] tracking-widest uppercase text-white transition-colors border border-white/10"
+                class="flex items-center gap-2 h-10 px-4 rounded-lg bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.08)] hover:bg-[rgba(255,255,255,0.10)] text-[#D0D5DD] hover:text-white transition-colors text-[11px] font-semibold tracking-wider uppercase font-['Plus_Jakarta_Sans']"
                 @click="initStream"
               >
-                Coba Lagi
+                <RotateCw class="w-3.5 h-3.5" />
+                Muat Ulang
               </button>
             </div>
           </div>
 
-          <!-- Bottom Bar (Minimal) -->
-          <div class="absolute bottom-0 inset-x-0 z-20 flex items-center justify-between p-4 sm:p-6 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
-            <h2 class="text-lg sm:text-2xl font-medium text-white tracking-tight drop-shadow-md">
-              {{ camera.name }}
-            </h2>
-
-            <div class="flex items-center gap-2 pointer-events-auto">
+          <!-- Dedicated Bottom Toolbar & Metadata Panel -->
+          <div class="px-5 sm:px-6 py-4 bg-[#0F1117] border-t border-[rgba(255,255,255,0.08)] flex items-center justify-between gap-4 shrink-0">
+            <!-- Group A - Playback -->
+            <div class="flex items-center gap-2">
               <button
-                class="p-2.5 rounded-lg bg-black/40 hover:bg-black/60 border border-white/10 text-white/70 hover:text-white transition-all backdrop-blur-md"
-                title="Reload Stream"
-                @click="initStream"
+                class="btn-control flex items-center justify-center w-[40px] h-[40px] rounded-lg bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.08)] text-[#D0D5DD]"
+                :title="isPlaying ? 'Pause' : 'Play'"
+                :aria-label="isPlaying ? 'Pause' : 'Play'"
+                @click="togglePlay"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"></path><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path></svg>
+                <Pause v-if="isPlaying" class="w-4 h-4 fill-current" />
+                <Play v-else class="w-4 h-4 fill-current ml-0.5" />
               </button>
               <button
-                class="p-2.5 rounded-lg bg-black/40 hover:bg-black/60 border border-white/10 text-white/70 hover:text-white transition-all backdrop-blur-md"
-                title="Fullscreen"
+                class="btn-control flex items-center justify-center w-[40px] h-[40px] rounded-lg bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.08)] text-[#D0D5DD]"
+                :title="isMuted ? 'Unmute' : 'Mute'"
+                :aria-label="isMuted ? 'Unmute' : 'Mute'"
+                @click="toggleMute"
+              >
+                <VolumeX v-if="isMuted" class="w-4 h-4" />
+                <Volume2 v-else class="w-4 h-4" />
+              </button>
+              <button
+                class="btn-control flex items-center justify-center w-[40px] h-[40px] rounded-lg bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.08)] text-[#D0D5DD]"
+                title="Muat Ulang Stream"
+                aria-label="Muat Ulang Stream"
+                @click="initStream"
+              >
+                <RotateCw class="w-4 h-4" />
+              </button>
+            </div>
+
+            <!-- Group B - Information -->
+            <div class="hidden sm:flex flex-col items-center gap-1 font-['Plus_Jakarta_Sans']">
+              <div class="flex items-center gap-1.5 text-[11px] text-[#98A2B3]">
+                <MapPin class="w-3.5 h-3.5 text-[#1479A6]" />
+                <span>06°35′S 106°48′E</span>
+              </div>
+              <div class="text-[11px] text-[#98A2B3] font-medium tracking-wide">
+                1080p · LIVE FEED
+              </div>
+            </div>
+
+            <!-- Group C - Action -->
+            <div class="flex items-center gap-2">
+              <button
+                class="btn-control flex items-center justify-center w-[40px] h-[40px] rounded-lg bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.08)] text-[#D0D5DD]"
+                title="Layar Penuh"
+                aria-label="Layar Penuh"
                 @click="toggleFullscreen"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+                <Maximize class="w-4 h-4" />
               </button>
             </div>
           </div>
@@ -217,7 +286,7 @@ onUnmounted(() => {
 <style scoped>
 .viewer-enter-active,
 .viewer-leave-active {
-  transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 300ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .viewer-enter-from,
@@ -226,9 +295,37 @@ onUnmounted(() => {
 }
 
 .viewer-enter-from > div:last-child {
-  transform: scale(0.96) translateY(10px);
+  transform: scale(0.98);
 }
 .viewer-leave-to > div:last-child {
-  transform: scale(0.96) translateY(10px);
+  transform: scale(0.98);
+}
+
+.btn-icon {
+  transition: all 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.btn-icon:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #FFFFFF;
+  transform: scale(1.05);
+}
+
+.btn-icon:active {
+  transform: scale(0.95);
+}
+
+.btn-control {
+  transition: all 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.btn-control:hover {
+  background: rgba(255, 255, 255, 0.10);
+  color: #FFFFFF;
+  transform: scale(1.08);
+}
+
+.btn-control:active {
+  transform: scale(0.95);
 }
 </style>

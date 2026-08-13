@@ -34,9 +34,10 @@ onMounted(() => {
   
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   if (!prefersReducedMotion && navRef.value) {
-    gsap.fromTo(navRef.value, 
-      { opacity: 0, y: -12 }, 
-      { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.1 }
+    const navItems = navRef.value.querySelectorAll('.nav-anim-item')
+    gsap.fromTo(navItems,
+      { opacity: 0, y: -8 },
+      { opacity: 1, y: 0, duration: 0.45, stagger: 0.05, ease: 'cubic-bezier(0.22, 1, 0.36, 1)', delay: 0.1 }
     )
   }
 })
@@ -56,28 +57,27 @@ onUnmounted(() => {
       :class="scrolled ? 'nav-scrolled' : 'nav-top'"
     >
       <!-- Logo -->
-      <a href="#" class="group flex items-center gap-3 shrink-0" @click="closeMobileMenu">
-        <div class="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-lg" style="background: var(--text); color: var(--bg);">
-          <span class="text-[10px] sm:text-xs font-bold tracking-wider">BL</span>
-        </div>
-        <span class="text-[13px] sm:text-[14px] font-semibold tracking-wide uppercase transition-colors" style="color: var(--text);">
-          Bogor Live
+      <a href="#" class="nav-anim-item group flex items-center gap-3 shrink-0" @click="closeMobileMenu">
+        <img src="/Kujang.webp" alt="Bogor Live Logo" class="w-7 h-7 sm:w-8 sm:h-8 object-contain" />
+        <span class="nav-logo-text text-[13px] sm:text-[14px] font-semibold tracking-wide uppercase transition-colors">
+          <span class="nav-logo-bogor" style="color: #1479A6;">Bogor </span>
+          <span class="nav-logo-live" style="color: #F28C28;">Live</span>
         </span>
       </a>
 
       <!-- Desktop Links -->
       <nav class="hidden md:flex items-center gap-8 lg:gap-10">
-        <a href="#explorer" class="nav-link text-[11px] tracking-[0.1em] font-medium uppercase relative group">
+        <a href="#explorer" class="nav-anim-item nav-link text-[11px] tracking-[0.1em] font-medium uppercase relative group">
           Kamera
-          <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-accent opacity-0 group-hover:opacity-100 transition-opacity"></span>
+          <span class="absolute -bottom-1 left-0 w-0 h-[2px] opacity-0 group-hover:w-full group-hover:opacity-100 transition-all duration-300 ease-out" style="background: #1479A6;"></span>
         </a>
-        <a href="#map" class="nav-link text-[11px] tracking-[0.1em] font-medium uppercase relative group">
+        <a href="#map" class="nav-anim-item nav-link text-[11px] tracking-[0.1em] font-medium uppercase relative group">
           Peta
-          <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-accent opacity-0 group-hover:opacity-100 transition-opacity"></span>
+          <span class="absolute -bottom-1 left-0 w-0 h-[2px] opacity-0 group-hover:w-full group-hover:opacity-100 transition-all duration-300 ease-out" style="background: #1479A6;"></span>
         </a>
-        <a href="#monitoring" class="nav-link text-[11px] tracking-[0.1em] font-medium uppercase relative group">
+        <a href="#monitoring" class="nav-anim-item nav-link text-[11px] tracking-[0.1em] font-medium uppercase relative group">
           Pantauan Saya
-          <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-accent opacity-0 group-hover:opacity-100 transition-opacity"></span>
+          <span class="absolute -bottom-1 left-0 w-0 h-[2px] opacity-0 group-hover:w-full group-hover:opacity-100 transition-all duration-300 ease-out" style="background: #1479A6;"></span>
         </a>
       </nav>
 
@@ -85,17 +85,17 @@ onUnmounted(() => {
       <div class="flex items-center gap-2 sm:gap-3 shrink-0">
         <!-- Search -->
         <button
-          class="search-btn group hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full border bg-transparent hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+          class="nav-anim-item search-btn group hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full border bg-transparent transition-colors"
           style="border-color: var(--border);"
           @click="emit('openSearch')"
         >
-          <span class="text-xs font-medium tracking-wide uppercase" style="color: var(--text-secondary);">⌕ Search</span>
+          <span class="text-xs font-medium tracking-wide uppercase group-hover:text-[#1479A6] transition-colors" style="color: var(--text-secondary);">⌕ Search</span>
           <kbd class="text-[9px] tracking-widest font-mono px-1.5 py-0.5 rounded border opacity-50" style="color: var(--text-muted); border-color: var(--border);">⌘K</kbd>
         </button>
 
         <button
-          class="sm:hidden w-9 h-9 flex items-center justify-center rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
-          style="color: var(--text-secondary);"
+          class="nav-anim-item sm:hidden w-9 h-9 flex items-center justify-center rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+          style="color: #64748B;"
           @click="emit('openSearch')"
         >
           <span class="text-sm">⌕</span>
@@ -105,7 +105,7 @@ onUnmounted(() => {
 
         <!-- Theme Toggle -->
         <button
-          class="theme-toggle w-9 h-9 flex items-center justify-center rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/5 transition-colors relative"
+          class="nav-anim-item theme-toggle w-9 h-9 flex items-center justify-center rounded-full bg-transparent transition-colors relative"
           style="color: var(--text-secondary);"
           :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
           @click="toggleTheme"
@@ -126,9 +126,9 @@ onUnmounted(() => {
         <div class="w-px h-3 bg-black/10 dark:bg-white/10 hidden sm:block"></div>
 
         <!-- Live Status -->
-        <div class="hidden sm:flex items-center gap-1.5 pl-1 pr-2">
-          <span class="live-dot w-1.5 h-1.5 bg-[#16A34A] rounded-full"></span>
-          <span class="text-[9px] tracking-[0.2em] font-bold uppercase text-[#16A34A] pt-px">Live</span>
+        <div class="nav-anim-item hidden sm:flex items-center gap-1.5 pl-1 pr-2">
+          <span class="live-dot w-1.5 h-1.5 rounded-full" style="background: #16A34A;"></span>
+          <span class="text-[9px] tracking-[0.2em] font-bold uppercase pt-px" style="color: #16A34A;">Live</span>
         </div>
 
         <!-- Mobile Menu Toggle -->
@@ -165,8 +165,8 @@ onUnmounted(() => {
       </nav>
       <div class="pt-6 border-t flex items-center justify-between" style="border-color: var(--border);">
         <div class="flex items-center gap-2">
-          <span class="live-dot w-2 h-2 bg-[#16A34A] rounded-full"></span>
-          <span class="text-[10px] tracking-[0.2em] font-bold uppercase text-[#16A34A] pt-px">System Live</span>
+          <span class="live-dot w-2 h-2 rounded-full" style="background: var(--accent);"></span>
+          <span class="text-[10px] tracking-[0.2em] font-bold uppercase pt-px" style="color: var(--accent);">System Live</span>
         </div>
       </div>
     </div>
@@ -176,11 +176,11 @@ onUnmounted(() => {
 <style scoped>
 .nav-container {
   width: 100%;
-  max-width: 1240px;
+  max-width: 1440px;
 }
 
 .nav-top {
-  height: 64px;
+  height: 56px;
   background: transparent;
   border: 1px solid transparent;
   padding-left: 0.5rem;
@@ -188,7 +188,7 @@ onUnmounted(() => {
 }
 @media (min-width: 640px) {
   .nav-top {
-    height: 72px;
+    height: 64px;
     padding-left: 1rem;
     padding-right: 1rem;
   }
@@ -196,14 +196,14 @@ onUnmounted(() => {
 
 .nav-scrolled {
   height: 56px;
-  background: rgba(255, 255, 255, 0.78);
+  background: rgba(20, 121, 166, 0.95);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 9999px;
   padding-left: 0.75rem;
   padding-right: 0.75rem;
-  box-shadow: 0 4px 24px -6px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 8px 32px -4px rgba(20, 121, 166, 0.35);
 }
 @media (min-width: 640px) {
   .nav-scrolled {
@@ -214,9 +214,51 @@ onUnmounted(() => {
 }
 
 :global([data-theme="dark"]) .nav-scrolled {
-  background: rgba(15, 17, 21, 0.78);
-  border-color: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.3);
+  background: rgba(16, 98, 136, 0.95);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.4);
+}
+
+.nav-scrolled .nav-logo-bogor {
+  color: #FFFFFF !important;
+}
+
+.nav-scrolled .nav-logo-live {
+  color: #F28C28 !important;
+}
+
+.nav-scrolled .nav-link {
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+
+.nav-scrolled .nav-link:hover {
+  color: #FFFFFF !important;
+}
+
+.nav-scrolled .nav-link span {
+  background: #FFFFFF !important;
+}
+
+.nav-scrolled .search-btn {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.nav-scrolled .search-btn span {
+  color: #FFFFFF !important;
+}
+
+.nav-scrolled .search-btn kbd {
+  color: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.nav-scrolled .theme-toggle {
+  color: #FFFFFF !important;
+}
+
+.nav-scrolled .theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #FFFFFF !important;
 }
 
 .nav-link {
@@ -225,12 +267,21 @@ onUnmounted(() => {
   display: inline-block;
 }
 .nav-link:hover {
-  color: var(--text);
+  color: var(--primary);
   transform: translateY(-1px);
 }
 
 .search-btn:hover span:first-child {
-  color: var(--text) !important;
+  color: var(--primary) !important;
+}
+
+.theme-toggle:hover {
+  background: var(--surface-elevated);
+  color: var(--primary) !important;
+}
+
+.search-btn:hover {
+  border-color: var(--primary) !important;
 }
 
 .theme-toggle:focus-visible, .search-btn:focus-visible, .nav-link:focus-visible {

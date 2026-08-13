@@ -21,12 +21,12 @@ export const CATEGORIES: { label: string; value: CameraCategory | 'all' }[] = [
 ]
 
 export const CATEGORY_COLORS: Record<CameraCategory, string> = {
-  Jalan: '#22D3EE',
-  Simpang: '#4ADE80',
-  Taman: '#FBBF24',
-  Pasar: '#FB923C',
-  Lapangan: '#A78BFA',
-  Gerbang: '#F472B6',
-  Kantor: '#60A5FA',
-  Lainnya: '#9AA4B2',
+  Jalan: '#64748B',
+  Simpang: '#64748B',
+  Taman: '#64748B',
+  Pasar: '#64748B',
+  Lapangan: '#64748B',
+  Gerbang: '#64748B',
+  Kantor: '#64748B',
+  Lainnya: '#64748B',
 }

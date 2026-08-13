@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, nextTick } from 'vue'
+import { ref, watch, nextTick, onMounted } from 'vue'
 import type { Camera } from '@/types/camera'
 import CameraCard from './CameraCard.vue'
 import gsap from 'gsap'
@@ -32,27 +32,25 @@ watch(() => props.cameras.length, async (newLen, oldLen) => {
     const newCards = gridRef.value?.querySelectorAll(`.camera-card:nth-child(n+${oldLen + 1})`)
     if (newCards && newCards.length > 0) {
       gsap.fromTo(newCards, 
-        { opacity: 0, y: 12, scale: 0.99 }, 
-        { opacity: 1, y: 0, scale: 1, stagger: 0.04, duration: 0.4, ease: 'power2.out' }
+        { opacity: 0, clipPath: 'inset(0% 0% 100% 0%)', scale: 1.04 }, 
+        { opacity: 1, clipPath: 'inset(0% 0% 0% 0%)', scale: 1, stagger: 0.06, duration: 0.85, ease: 'cubic-bezier(0.16, 1, 0.3, 1)', overwrite: 'auto' }
       )
     }
   }
 })
 
 // Initial enter animation for the first batch using ScrollTrigger
-import { onMounted } from 'vue'
 onMounted(() => {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   if (prefersReducedMotion) return
 
-  ScrollTrigger.batch('.camera-card', {
+  ScrollTrigger.batch('.camera-grid .camera-card', {
     interval: 0.1,
     batchMax: 6,
     onEnter: (batch) => {
-      // Only animate if they haven't been animated by the loadMore watcher
       gsap.fromTo(batch, 
-        { opacity: 0, y: 20, scale: 0.98 }, 
-        { opacity: 1, y: 0, scale: 1, stagger: 0.05, duration: 0.6, ease: 'power3.out', overwrite: 'auto' }
+        { opacity: 0, clipPath: 'inset(0% 0% 100% 0%)', scale: 1.04 }, 
+        { opacity: 1, clipPath: 'inset(0% 0% 0% 0%)', scale: 1, stagger: 0.08, duration: 0.9, ease: 'cubic-bezier(0.16, 1, 0.3, 1)', overwrite: 'auto' }
       )
     }
   })
@@ -61,6 +59,16 @@ onMounted(() => {
 
 <template>
   <div>
+    <!-- Grid Info Header -->
+    <div v-if="cameras.length > 0" class="flex items-center justify-between gap-4 mb-6 pb-4 border-b border-border">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span class="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+          Menampilkan <strong class="text-text font-bold">{{ cameras.length }}</strong> dari <strong class="text-text font-bold">{{ total }}</strong> Kamera
+        </span>
+      </div>
+    </div>
+
     <!-- Empty State -->
     <div v-if="cameras.length === 0" class="text-center py-24 sm:py-32">
       <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-surface-muted border border-border mb-4">
@@ -77,19 +85,19 @@ onMounted(() => {
       </button>
     </div>
 
-    <!-- Grid -->
-    <div v-else ref="gridRef" class="camera-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+    <!-- Fixed 3-Column Equalized Grid -->
+    <div
+      v-else
+      ref="gridRef"
+      class="camera-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"
+    >
       <div
-        v-for="(cam, index) in cameras"
+        v-for="cam in cameras"
         :key="cam.id"
-        class="camera-card"
-        :class="{
-          'sm:col-span-2 lg:col-span-2': index === 0 // Featured camera spans 2 columns
-        }"
+        class="camera-card w-full"
       >
         <CameraCard 
           :camera="cam" 
-          :featured="index === 0"
           @select="emit('select', cam)" 
         />
       </div>
