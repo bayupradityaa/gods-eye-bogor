@@ -121,6 +121,7 @@ onUnmounted(() => {
         <button
           class="nav-anim-item sm:hidden w-9 h-9 flex items-center justify-center rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
           style="color: #64748B;"
+          aria-label="Cari"
           @click="emit('openSearch')"
         >
           <span class="text-sm">⌕</span>
@@ -160,6 +161,7 @@ onUnmounted(() => {
         <button 
           class="md:hidden w-9 h-9 flex items-center justify-center rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
           style="color: var(--text);"
+          aria-label="Menu Utama"
           @click="mobileMenuOpen = !mobileMenuOpen"
         >
           <Menu v-if="!mobileMenuOpen" :size="16" />

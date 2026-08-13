@@ -40,7 +40,7 @@ function openViewer() {
       </div>
     </div>
     <div class="p-4">
-      <h4 class="font-bold text-sm line-clamp-1 mb-1 text-[var(--text)]">{{ selectedMapCamera?.name }}</h4>
+      <h3 class="font-bold text-sm line-clamp-1 mb-1 text-[var(--text)]">{{ selectedMapCamera?.name }}</h3>
       <p class="text-[10px] uppercase tracking-wider font-medium mb-4 text-[var(--text-muted)]">CAM {{ String(selectedMapCamera?.id).padStart(3, '0') }}</p>
       
       <button @click="openViewer" class="w-full bg-[#1687B8] hover:bg-[#126f96] text-white text-xs font-bold uppercase tracking-wide py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
@@ -69,7 +69,7 @@ function openViewer() {
       <div class="px-5 pb-5">
         <div class="flex items-center justify-between mb-5">
           <div>
-            <h4 class="font-bold text-base line-clamp-1 text-[var(--text)]">{{ selectedMapCamera?.name }}</h4>
+            <h3 class="font-bold text-base line-clamp-1 text-[var(--text)]">{{ selectedMapCamera?.name }}</h3>
             <div class="flex items-center gap-2 mt-1.5">
               <div class="flex items-center gap-1.5">
                 <span class="w-1.5 h-1.5 rounded-full bg-[#F28C28] animate-pulse"></span>

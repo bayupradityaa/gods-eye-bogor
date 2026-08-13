@@ -50,7 +50,11 @@ function updateClusters() {
         iconSize: [36, 36]
       })
       
-      const marker = L.marker([lat, lng], { icon })
+      const marker = L.marker([lat, lng], { 
+        icon,
+        title: `Grup ${count} Kamera`,
+        alt: `Grup ${count} Kamera`
+      })
       marker.on('click', () => {
         const expansionZoom = cluster!.getClusterExpansionZoom(c.properties.cluster_id)
         mapInstance.value?.setView([lat, lng], expansionZoom, { animate: true })
@@ -77,7 +81,11 @@ function updateClusters() {
         iconAnchor: [12, 12]
       })
       
-      const marker = L.marker([lat, lng], { icon })
+      const marker = L.marker([lat, lng], { 
+        icon,
+        title: cam.name,
+        alt: cam.name
+      })
       marker.on('click', () => {
         selectMapCamera(cam)
       })
