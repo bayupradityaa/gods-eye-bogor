@@ -66,6 +66,7 @@ function updateClusters() {
         <div class="camera-marker ${isSelected ? 'is-selected' : ''}">
           <div class="marker-core"></div>
           <div class="marker-ring"></div>
+          <div class="marker-live-dot"></div>
         </div>
       `
       
@@ -88,10 +89,19 @@ function updateClusters() {
 function initMap() {
   if (!mapContainer.value) return
   
+  // Define Bogor bounds
+  const bogorBounds = L.latLngBounds(
+    [-6.75, 106.65], // Southwest
+    [-6.45, 106.95]  // Northeast
+  );
+
   // Initialize Map
   const m = L.map(mapContainer.value, {
     zoomControl: false, // We'll build custom controls
-    attributionControl: false
+    attributionControl: false,
+    maxBounds: bogorBounds,
+    maxBoundsViscosity: 1.0,
+    minZoom: 11
   }).setView([-6.5971, 106.7932], 13)
   
   tileLayer = L.tileLayer(TILE_URLS[theme.value], {
@@ -236,6 +246,29 @@ onUnmounted(() => {
 @keyframes pulse-ring {
   0% { transform: scale(1); opacity: 1; }
   100% { transform: scale(1.5); opacity: 0; }
+}
+
+.marker-live-dot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 5px;
+  height: 5px;
+  background: #F28C28; /* System Green */
+  border-radius: 50%;
+  border: 1px solid #FFFFFF;
+  animation: pulse-live 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+  pointer-events: none;
+}
+
+.dark .marker-live-dot {
+  border-color: #0B1120;
+}
+
+@keyframes pulse-live {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 /* Custom Cluster */

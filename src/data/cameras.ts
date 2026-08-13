@@ -1,10 +1,10 @@
 import type { Camera } from '@/types/camera'
 
 export const CAMERAS: Camera[] = [
-  { id: 79, name: "TUGU KUJANG",          stream: "https://restreamer2.kotabogor.go.id/memfs/5a5cf878-9d9b-4400-a73a-27a5b24a6ec4.m3u8",   category: "Lainnya", latitude: -6.6015, longitude: 106.8055 },
-  { id: 80, name: "CIHELEUT",             stream: "https://restreamer2.kotabogor.go.id/memfs/f5ca1d37-c267-4806-850b-d1ca537fb29a.m3u8",   category: "Lainnya" },
-  { id: 81, name: "DJUANDA ARAH BALAIKOTA", stream: "https://restreamer2.kotabogor.go.id/memfs/f707b72a-5c95-421a-9f3a-2e478794bd76.m3u8", category: "Jalan" },
-  { id: 82, name: "DEPAN ALUN ALUN",      stream: "https://restreamer2.kotabogor.go.id/memfs/c07c1926-288c-46e4-a19c-9f51022edc5d.m3u8",   category: "Lainnya", latitude: -6.5947, longitude: 106.7900 },
+  { id: 79, name: "TUGU KUJANG",          stream: "https://restreamer2.kotabogor.go.id/memfs/5a5cf878-9d9b-4400-a73a-27a5b24a6ec4.m3u8",   category: "Lainnya", latitude: -6.6015, longitude: 106.8055, weatherLocation: { adm4: "32.71.03.1011", village: "Tegallega", district: "Bogor Tengah" } },
+  { id: 80, name: "CIHELEUT",             stream: "https://restreamer2.kotabogor.go.id/memfs/f5ca1d37-c267-4806-850b-d1ca537fb29a.m3u8",   category: "Lainnya", weatherLocation: { adm4: "32.71.01.1004", village: "Baranangsiang", district: "Bogor Timur" } },
+  { id: 81, name: "DJUANDA ARAH BALAIKOTA", stream: "https://restreamer2.kotabogor.go.id/memfs/f707b72a-5c95-421a-9f3a-2e478794bd76.m3u8", category: "Jalan", weatherLocation: { adm4: "32.71.03.1001", village: "Pabaton", district: "Bogor Tengah" } },
+  { id: 82, name: "DEPAN ALUN ALUN",      stream: "https://restreamer2.kotabogor.go.id/memfs/c07c1926-288c-46e4-a19c-9f51022edc5d.m3u8",   category: "Lainnya", latitude: -6.5947, longitude: 106.7900, weatherLocation: { adm4: "32.71.03.1001", village: "Pabaton", district: "Bogor Tengah" } },
   { id: 83, name: "PASAR BOGOR",          stream: "https://restreamer2.kotabogor.go.id/memfs/b43066d4-b1e4-4e90-8e17-86c15a9a944e.m3u8",   category: "Pasar", latitude: -6.6025, longitude: 106.8000 },
   { id: 85, name: "JUANDA",               stream: "https://restreamer2.kotabogor.go.id/memfs/62cded1f-90d0-4af6-b330-dc40af5fdd67.m3u8",   category: "Jalan" },
   { id: 86, name: "SEKETENG SURKEN",      stream: "https://restreamer2.kotabogor.go.id/memfs/3d51d3a1-0d90-4230-956c-60dea3c11ac3.m3u8",   category: "Lainnya" },

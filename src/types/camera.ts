@@ -15,6 +15,11 @@ export interface Camera {
   category: CameraCategory
   latitude?: number
   longitude?: number
+  weatherLocation?: {
+    adm4: string
+    village: string
+    district: string
+  }
 }
 
 export interface CameraViewerState {

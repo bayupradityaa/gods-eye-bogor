@@ -84,7 +84,7 @@ function handleSelect(cam: Camera) {
         :class="selectedMapCamera?.id === cam.id ? 'bg-[#F1F7FA] dark:bg-[#1687B8]/10 shadow-sm border border-[#1687B8]/20' : 'hover:bg-[var(--surface-elevated)] border border-transparent'"
         @click="handleSelect(cam)"
       >
-        <div class="mt-0.5 shrink-0 w-2 h-2 rounded-full" :class="selectedMapCamera?.id === cam.id ? 'bg-[#F59A23]' : 'bg-[#1687B8] opacity-60'"></div>
+        <img src="/cctv.svg" alt="CCTV Icon" class="mt-0.5 shrink-0 w-4 h-4 transition-all" :class="selectedMapCamera?.id === cam.id ? 'opacity-100 scale-110 drop-shadow-sm' : 'opacity-50 grayscale'" />
         <div class="min-w-0 flex-1">
           <p class="text-[13px] font-semibold text-[var(--text)] truncate group-hover:text-[#1687B8] transition-colors" :class="selectedMapCamera?.id === cam.id ? 'text-[#1687B8]!' : ''">
             {{ cam.name }}

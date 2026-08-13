@@ -25,7 +25,7 @@ const emit = defineEmits<{
       <span
         v-if="counts && counts[cat.value] !== undefined"
         class="text-[10px] font-bold px-2 py-0.5 rounded-full transition-colors"
-        :class="active === cat.value ? 'bg-primary/20 text-primary' : 'bg-surface-muted text-text-muted border border-border'"
+        :class="active === cat.value ? 'active-count' : 'bg-[var(--surface-muted)] text-[var(--text-muted)] border border-[var(--border)]'"
       >
         {{ counts[cat.value] }}
       </span>
@@ -48,10 +48,13 @@ const emit = defineEmits<{
 }
 
 .filter-active {
-  background: var(--primary-dim);
-  color: var(--primary);
-  border-color: var(--primary-soft);
-  box-shadow: 0 2px 8px var(--primary-dim);
+  background: rgba(242, 140, 40, 0.08);
+  color: var(--accent);
+  border-color: rgba(242, 140, 40, 0.3);
+}
+.active-count {
+  background: rgba(242, 140, 40, 0.15);
+  color: var(--accent);
 }
 
 .filter-inactive {

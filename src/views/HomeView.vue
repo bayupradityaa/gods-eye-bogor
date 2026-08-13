@@ -40,45 +40,7 @@ onMounted(() => {
   
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   if (!prefersReducedMotion) {
-    gsap.utils.toArray('.motion-divider-container').forEach((divider: any) => {
-      gsap.to(divider, {
-        scrollTrigger: {
-          trigger: divider,
-          start: 'top 85%',
-        },
-        opacity: 1,
-        duration: 0.2
-      })
-      
-      const line = divider.querySelector('.motion-line')
-      const arrow = divider.querySelector('.motion-arrow')
-      
-      if (line) {
-        gsap.to(line, {
-          scrollTrigger: {
-            trigger: divider,
-            start: 'top 85%',
-          },
-          maxWidth: '100%',
-          duration: 1.5,
-          ease: 'power3.out'
-        })
-      }
-      
-      if (arrow) {
-        gsap.to(arrow, {
-          scrollTrigger: {
-            trigger: divider,
-            start: 'top 85%',
-          },
-          opacity: 1,
-          x: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          delay: 0.5
-        })
-      }
-    })
+    // Add generic staggered entrance for main sections if needed
   }
 })
 onUnmounted(() => document.removeEventListener('keydown', onKeydown))
@@ -93,28 +55,18 @@ function handleClearSearch() {
   <div class="min-h-screen" style="background: var(--bg);">
     <Navbar @open-search="showCommandPalette = true" />
     <main>
-      <HeroSection />
-      <CityStats />
-
-      <div class="layout-container motion-divider-container py-4">
-        <div class="motion-line"></div>
-        <span class="motion-arrow">→</span>
-      </div>
-
-      <!-- My Monitoring: favorites + recently viewed -->
-      <MyMonitoring @select="openCamera" />
-
-      <div class="layout-container motion-divider-container py-4">
-        <div class="motion-line"></div>
-        <span class="motion-arrow">→</span>
+      <HeroSection @select="openCamera" />
+      
+      <div class="mb-8">
+        <CityStats />
       </div>
 
       <!-- CCTV Explorer -->
-      <section id="explorer" class="relative z-10 layout-container py-16 sm:py-24">
+      <section id="cameras" class="relative z-10 layout-container py-16 sm:py-24">
         <div class="mb-12">
-          <p class="text-[10px] sm:text-xs tracking-[0.2em] uppercase mb-2 font-medium" style="color: var(--text-muted);">Camera Explorer</p>
+          <p class="text-[10px] sm:text-xs tracking-[0.2em] uppercase mb-2 font-medium" style="color: var(--text-muted);">Live Cameras</p>
           <h2 class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight" style="color: var(--text);">Jelajahi Kamera Publik</h2>
-          <p class="mt-3 max-w-xl text-[15px] sm:text-base leading-relaxed" style="color: var(--text-secondary);">Temukan dan pantau kamera publik di berbagai titik Kota Bogor.</p>
+          <p class="mt-3 max-w-xl text-[15px] sm:text-base leading-relaxed" style="color: var(--text-secondary);">Pantau kondisi Kota Bogor secara langsung dari kamera publik yang tersedia.</p>
         </div>
         
         <CameraSearch :query="searchQuery" @update:query="setSearch" @open-palette="showCommandPalette = true" />
@@ -131,13 +83,31 @@ function handleClearSearch() {
         </div>
       </section>
 
-      <div class="layout-container motion-divider-container py-4">
-        <div class="motion-line"></div>
-        <span class="motion-arrow">→</span>
+      <!-- Editorial Divider -->
+      <div class="layout-container">
+        <div class="flex w-full h-[1px] opacity-70">
+          <div class="w-16 h-full" style="background: var(--accent);"></div>
+          <div class="flex-1 h-full" style="background: var(--border);"></div>
+        </div>
+      </div>
+
+      <!-- My Monitoring: favorites + recently viewed -->
+      <div class="py-12 sm:py-20">
+        <MyMonitoring @select="openCamera" />
+      </div>
+
+      <!-- Editorial Divider -->
+      <div class="layout-container">
+        <div class="flex w-full h-[1px] opacity-70">
+          <div class="w-16 h-full" style="background: var(--accent);"></div>
+          <div class="flex-1 h-full" style="background: var(--border);"></div>
+        </div>
       </div>
 
       <!-- Interactive Map — Premium Map Experience -->
-      <CameraMap />
+      <div class="pt-16 pb-24 sm:pt-24 sm:pb-32">
+        <CameraMap />
+      </div>
 
       <CameraViewer :open="viewerOpen" :camera="selectedCamera" @close="closeViewer" />
       <CommandPalette :open="showCommandPalette" @close="showCommandPalette = false" @select="(cam) => { showCommandPalette = false; openCamera(cam) }" />

@@ -37,10 +37,10 @@
   --bogor-orange-dim: rgba(242, 140, 40, 0.10);
   --bogor-orange-soft: rgba(242, 140, 40, 0.15);
 
-  /* Status — Live Green */
-  --live-green: #16A34A;
-  --live-green-dim: rgba(22, 163, 74, 0.10);
-  --live-green-soft: rgba(22, 163, 74, 0.15);
+  /* Status — Live Orange (formerly green) */
+  --live-green: #F28C28;
+  --live-green-dim: rgba(242, 140, 40, 0.10);
+  --live-green-soft: rgba(242, 140, 40, 0.15);
 
   /* Aliases for backward compatibility */
   --primary: var(--bogor-blue);
@@ -49,9 +49,9 @@
   --motion: var(--bogor-orange);
   --motion-dim: var(--bogor-orange-dim);
   --motion-soft: var(--bogor-orange-soft);
-  --accent: var(--live-green);
-  --accent-dim: var(--live-green-dim);
-  --accent-soft: var(--live-green-soft);
+  --accent: var(--bogor-orange);
+  --accent-dim: var(--bogor-orange-dim);
+  --accent-soft: var(--bogor-orange-soft);
 
   /* Semantic */
   --danger: #DC2626;
@@ -189,10 +189,10 @@
   --bogor-orange-dim: rgba(242, 140, 40, 0.12);
   --bogor-orange-soft: rgba(242, 140, 40, 0.18);
 
-  /* Status — Live Green (keep consistent in dark) */
-  --live-green: #16A34A;
-  --live-green-dim: rgba(22, 163, 74, 0.12);
-  --live-green-soft: rgba(22, 163, 74, 0.18);
+  /* Status — Live Orange (formerly green) */
+  --live-green: #F28C28;
+  --live-green-dim: rgba(242, 140, 40, 0.12);
+  --live-green-soft: rgba(242, 140, 40, 0.18);
 
   /* Aliases for backward compatibility */
   --primary: var(--bogor-blue);
@@ -201,9 +201,9 @@
   --motion: var(--bogor-orange);
   --motion-dim: var(--bogor-orange-dim);
   --motion-soft: var(--bogor-orange-soft);
-  --accent: var(--live-green);
-  --accent-dim: var(--live-green-dim);
-  --accent-soft: var(--live-green-soft);
+  --accent: var(--bogor-orange);
+  --accent-dim: var(--bogor-orange-dim);
+  --accent-soft: var(--bogor-orange-soft);
 
   /* Semantic */
   --danger: #EF4444;
@@ -324,7 +324,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;

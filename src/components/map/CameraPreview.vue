@@ -35,8 +35,8 @@ function openViewer() {
         <X class="w-4 h-4" />
       </button>
       <div class="absolute bottom-2 left-2 flex items-center gap-1.5 z-10 bg-black/60 backdrop-blur-md px-2 py-1 rounded-md">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#16A34A] animate-pulse"></span>
-        <span class="text-[9px] font-bold tracking-[0.08em] text-[#16A34A] uppercase">LIVE</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-[#F28C28] animate-pulse"></span>
+        <span class="text-[9px] font-bold tracking-[0.08em] text-[#F28C28] uppercase">LIVE</span>
       </div>
     </div>
     <div class="p-4">
@@ -72,8 +72,8 @@ function openViewer() {
             <h4 class="font-bold text-base line-clamp-1 text-[var(--text)]">{{ selectedMapCamera?.name }}</h4>
             <div class="flex items-center gap-2 mt-1.5">
               <div class="flex items-center gap-1.5">
-                <span class="w-1.5 h-1.5 rounded-full bg-[#16A34A] animate-pulse"></span>
-                <span class="text-[10px] font-bold tracking-[0.08em] text-[#16A34A] uppercase">LIVE</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-[#F28C28] animate-pulse"></span>
+                <span class="text-[10px] font-bold tracking-[0.08em] text-[#F28C28] uppercase">LIVE</span>
               </div>
               <span class="text-gray-400 text-[10px]">•</span>
               <span class="text-[10px] uppercase tracking-wider text-gray-500 font-medium">CAM {{ String(selectedMapCamera?.id).padStart(3, '0') }}</span>

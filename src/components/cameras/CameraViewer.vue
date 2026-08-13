@@ -155,8 +155,8 @@ onUnmounted(() => {
                   {{ camera.name }}
                 </h3>
                 <div class="flex items-center gap-1.5 shrink-0">
-                  <span class="w-1.5 h-1.5 rounded-full bg-[#16A34A] animate-pulse"></span>
-                  <span class="text-[10px] sm:text-[11px] font-semibold tracking-[0.08em] text-[#16A34A] uppercase font-['Plus_Jakarta_Sans']">LIVE</span>
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#F28C28] animate-pulse"></span>
+                  <span class="text-[10px] sm:text-[11px] font-semibold tracking-[0.08em] text-[#F28C28] uppercase font-['Plus_Jakarta_Sans']">LIVE</span>
                 </div>
               </div>
 

@@ -42,9 +42,16 @@ function onFavoriteClick(e: Event) {
         :src="snapshotUrl"
         :alt="`CCTV ${camera.name}`"
         loading="lazy"
-        class="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+        class="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.05]"
         @error="imageError = true"
       />
+
+      <!-- Hover Play Overlay -->
+      <div v-if="!imageError" class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-10 pointer-events-none">
+        <div class="w-12 h-12 rounded-full bg-black/30 border border-white/20 backdrop-blur-md flex items-center justify-center text-white transform scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="ml-1"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        </div>
+      </div>
 
       <!-- Fallback Signal Error -->
       <div v-else class="h-full w-full bg-[#070A10] font-mono flex flex-col items-center justify-center text-white/40 text-[10px] tracking-widest uppercase">
@@ -58,8 +65,8 @@ function onFavoriteClick(e: Event) {
 
       <!-- Live Indicator (Bottom Left) -->
       <div class="absolute bottom-3 left-3 flex items-center gap-1.5 z-10 pointer-events-none">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#16A34A] animate-pulse"></span>
-        <span class="text-[10px] sm:text-[11px] font-semibold tracking-[0.08em] text-[#16A34A] uppercase font-['Plus_Jakarta_Sans']">LIVE</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-[#F28C28] animate-pulse"></span>
+        <span class="text-[10px] sm:text-[11px] font-semibold tracking-[0.08em] text-[#F28C28] uppercase font-['Plus_Jakarta_Sans']">LIVE</span>
       </div>
 
       <!-- Favorite Button (Bottom Right) -->
@@ -101,17 +108,18 @@ function onFavoriteClick(e: Event) {
 
 <style scoped>
 .camera-card {
-  transition: all 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 500ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .camera-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  border-color: rgba(20, 121, 166, 0.3); /* subtle primary border */
 }
 
 .dark .camera-card:hover {
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
-  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+  border-color: rgba(20, 121, 166, 0.5);
 }
 
 .camera-card:active {

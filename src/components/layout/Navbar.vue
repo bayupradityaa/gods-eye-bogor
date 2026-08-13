@@ -13,6 +13,8 @@ const { isDark, toggleTheme } = useTheme()
 const scrolled = ref(false)
 const mobileMenuOpen = ref(false)
 const navRef = ref<HTMLElement | null>(null)
+const activeSection = ref('')
+let observer: IntersectionObserver | null = null
 
 function onScroll() {
   scrolled.value = window.scrollY > 40
@@ -40,11 +42,28 @@ onMounted(() => {
       { opacity: 1, y: 0, duration: 0.45, stagger: 0.05, ease: 'cubic-bezier(0.22, 1, 0.36, 1)', delay: 0.1 }
     )
   }
+
+  // Setup Intersection Observer for active section
+  observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        activeSection.value = entry.target.id
+      }
+    })
+  }, { rootMargin: '-20% 0px -60% 0px' })
+  
+  setTimeout(() => {
+    ['cameras', 'map', 'watchlist'].forEach(id => {
+      const el = document.getElementById(id)
+      if (el) observer?.observe(el)
+    })
+  }, 500)
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', onScroll)
   window.removeEventListener('keydown', onKeydown)
+  if (observer) observer.disconnect()
 })
 </script>
 
@@ -59,25 +78,31 @@ onUnmounted(() => {
       <!-- Logo -->
       <a href="#" class="nav-anim-item group flex items-center gap-3 shrink-0" @click="closeMobileMenu">
         <img src="/Kujang.webp" alt="Bogor Live Logo" class="w-7 h-7 sm:w-8 sm:h-8 object-contain" />
-        <span class="nav-logo-text text-[13px] sm:text-[14px] font-semibold tracking-wide uppercase transition-colors">
-          <span class="nav-logo-bogor" style="color: #1479A6;">Bogor </span>
-          <span class="nav-logo-live" style="color: #F28C28;">Live</span>
+        <span class="nav-logo-text text-[13px] sm:text-[14px] font-[900] tracking-tighter uppercase transition-colors font-['Plus_Jakarta_Sans']">
+          <span class="nav-logo-bogor" style="color: var(--primary);">BOGOR</span>
+          <span class="nav-logo-live" style="color: var(--text);"> LIVE</span><span style="color: var(--accent);">.</span>
         </span>
       </a>
 
       <!-- Desktop Links -->
       <nav class="hidden md:flex items-center gap-8 lg:gap-10">
-        <a href="#explorer" class="nav-anim-item nav-link text-[11px] tracking-[0.1em] font-medium uppercase relative group">
+        <a href="#cameras" class="nav-anim-item nav-link text-[11px] tracking-[0.1em] font-medium uppercase relative group" :class="{ 'active-nav': activeSection === 'cameras' }">
           Kamera
-          <span class="absolute -bottom-1 left-0 w-0 h-[2px] opacity-0 group-hover:w-full group-hover:opacity-100 transition-all duration-300 ease-out" style="background: #1479A6;"></span>
+          <span class="absolute -bottom-1 left-0 h-[2px] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" 
+                :class="activeSection === 'cameras' ? 'w-full opacity-100' : 'w-0 opacity-0 group-hover:w-full group-hover:opacity-100'" 
+                style="background: #1479A6;"></span>
         </a>
-        <a href="#map" class="nav-anim-item nav-link text-[11px] tracking-[0.1em] font-medium uppercase relative group">
+        <a href="#map" class="nav-anim-item nav-link text-[11px] tracking-[0.1em] font-medium uppercase relative group" :class="{ 'active-nav': activeSection === 'map' }">
           Peta
-          <span class="absolute -bottom-1 left-0 w-0 h-[2px] opacity-0 group-hover:w-full group-hover:opacity-100 transition-all duration-300 ease-out" style="background: #1479A6;"></span>
+          <span class="absolute -bottom-1 h-[2px] left-1/2 -translate-x-1/2 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" 
+                :class="activeSection === 'map' ? 'w-full opacity-100' : 'w-0 opacity-0 group-hover:w-full group-hover:opacity-100'" 
+                style="background: #1479A6;"></span>
         </a>
-        <a href="#monitoring" class="nav-anim-item nav-link text-[11px] tracking-[0.1em] font-medium uppercase relative group">
+        <a href="#watchlist" class="nav-anim-item nav-link text-[11px] tracking-[0.1em] font-medium uppercase relative group" :class="{ 'active-nav': activeSection === 'watchlist' }">
           Pantauan Saya
-          <span class="absolute -bottom-1 left-0 w-0 h-[2px] opacity-0 group-hover:w-full group-hover:opacity-100 transition-all duration-300 ease-out" style="background: #1479A6;"></span>
+          <span class="absolute -bottom-1 right-0 h-[2px] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" 
+                :class="activeSection === 'watchlist' ? 'w-full opacity-100' : 'w-0 opacity-0 group-hover:w-full group-hover:opacity-100'" 
+                style="background: #1479A6;"></span>
         </a>
       </nav>
 
@@ -127,8 +152,8 @@ onUnmounted(() => {
 
         <!-- Live Status -->
         <div class="nav-anim-item hidden sm:flex items-center gap-1.5 pl-1 pr-2">
-          <span class="live-dot w-1.5 h-1.5 rounded-full" style="background: #16A34A;"></span>
-          <span class="text-[9px] tracking-[0.2em] font-bold uppercase pt-px" style="color: #16A34A;">Live</span>
+          <span class="live-dot w-1.5 h-1.5 rounded-full" style="background: #F28C28;"></span>
+          <span class="live-text text-[9px] tracking-[0.2em] font-bold uppercase pt-px" style="color: #F28C28;">Live</span>
         </div>
 
         <!-- Mobile Menu Toggle -->
@@ -159,14 +184,19 @@ onUnmounted(() => {
       style="background: var(--surface); border-color: var(--border);"
     >
       <nav class="flex flex-col gap-6">
-        <a href="#explorer" class="text-xs tracking-[0.2em] font-semibold uppercase" style="color: var(--text);" @click="closeMobileMenu">Kamera</a>
-        <a href="#map" class="text-xs tracking-[0.2em] font-semibold uppercase" style="color: var(--text);" @click="closeMobileMenu">Peta</a>
-        <a href="#monitoring" class="text-xs tracking-[0.2em] font-semibold uppercase" style="color: var(--text);" @click="closeMobileMenu">Pantauan Saya</a>
+        <a href="#cameras" class="text-xs tracking-[0.2em] font-semibold uppercase" :class="activeSection === 'cameras' ? 'text-[var(--primary)]' : 'text-[var(--text)]'" @click="closeMobileMenu">Kamera</a>
+        <a href="#map" class="text-xs tracking-[0.2em] font-semibold uppercase" :class="activeSection === 'map' ? 'text-[var(--primary)]' : 'text-[var(--text)]'" @click="closeMobileMenu">Peta</a>
+        <a href="#watchlist" class="text-xs tracking-[0.2em] font-semibold uppercase" :class="activeSection === 'watchlist' ? 'text-[var(--primary)]' : 'text-[var(--text)]'" @click="closeMobileMenu">Pantauan Saya</a>
       </nav>
       <div class="pt-6 border-t flex items-center justify-between" style="border-color: var(--border);">
-        <div class="flex items-center gap-2">
-          <span class="live-dot w-2 h-2 rounded-full" style="background: var(--accent);"></span>
-          <span class="text-[10px] tracking-[0.2em] font-bold uppercase pt-px" style="color: var(--accent);">System Live</span>
+        <div class="flex items-center h-full">
+          <a href="#" class="flex items-center gap-3" aria-label="Beranda">
+            <img src="/Kujang.webp" alt="Bogor Live Logo" class="w-7 h-7 object-contain" />
+            <span class="text-[14px] font-[900] tracking-tighter uppercase font-['Plus_Jakarta_Sans']">
+              <span style="color: var(--primary);">BOGOR</span>
+              <span style="color: var(--text);"> LIVE</span><span style="color: var(--accent);">.</span>
+            </span>
+          </a>
         </div>
       </div>
     </div>
@@ -224,11 +254,24 @@ onUnmounted(() => {
 }
 
 .nav-scrolled .nav-logo-live {
+  color: #FFFFFF !important;
+}
+
+.nav-scrolled .live-dot {
+  background: #F28C28 !important;
+}
+
+.nav-scrolled .live-text {
   color: #F28C28 !important;
 }
 
 .nav-scrolled .nav-link {
   color: rgba(255, 255, 255, 0.88) !important;
+}
+
+.nav-scrolled .nav-link.active-nav {
+  color: #FFFFFF !important;
+  font-weight: 700;
 }
 
 .nav-scrolled .nav-link:hover {
@@ -263,12 +306,16 @@ onUnmounted(() => {
 
 .nav-link {
   color: var(--text-secondary);
-  transition: color 200ms ease, transform 200ms ease;
+  transition: color 400ms cubic-bezier(0.16, 1, 0.3, 1), opacity 400ms cubic-bezier(0.16, 1, 0.3, 1);
   display: inline-block;
+}
+.nav-link.active-nav {
+  color: var(--text);
+  font-weight: 700;
 }
 .nav-link:hover {
   color: var(--primary);
-  transform: translateY(-1px);
+  opacity: 0.9;
 }
 
 .search-btn:hover span:first-child {
