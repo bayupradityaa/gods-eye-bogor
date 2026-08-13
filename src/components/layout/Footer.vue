@@ -11,7 +11,7 @@
       </svg>
     </div>
 
-    <div class="layout-container pb-12 sm:pb-16 pt-6 sm:pt-8">
+    <div class="layout-container pb-6 sm:pb-8 pt-6 sm:pt-8">
       <div class="grid md:grid-cols-2 gap-12 items-start">
         <!-- Left: Brand -->
         <div class="space-y-4">
@@ -19,7 +19,7 @@
             <h2 class="text-xl font-[900] tracking-tighter text-white font-['Plus_Jakarta_Sans']">
               BOGOR LIVE<span style="color: var(--accent);">.</span>
             </h2>
-            <p class="text-xs tracking-[0.2em] uppercase font-medium mt-1 text-white/70">
+            <p class="text-xs tracking-[0.2em] uppercase font-medium mt-1 text-white/90">
               Jendela digital menuju Kota Bogor
             </p>
           </div>
@@ -31,7 +31,7 @@
         <!-- Right: Links -->
         <div class="flex flex-wrap gap-x-12 gap-y-8 md:justify-end">
           <div class="space-y-4">
-            <p class="text-[10px] tracking-widest uppercase font-semibold text-white/60">Platform</p>
+            <p class="text-[10px] tracking-widest uppercase font-semibold text-[var(--accent)]">Platform</p>
             <ul class="space-y-3">
               <li><a href="#explorer" class="footer-link text-sm">Kamera</a></li>
               <li><a href="#map" class="footer-link text-sm">Peta Interaktif</a></li>
@@ -40,18 +40,28 @@
           </div>
           
           <div class="space-y-4">
-            <p class="text-[10px] tracking-widest uppercase font-semibold text-white/60">Sumber Data</p>
-            <ul class="space-y-3">
-              <li><span class="text-sm text-white/90">Diskominfo Bogor</span></li>
-              <li><span class="text-sm text-white/90">Jasa Marga</span></li>
-            </ul>
+            <p class="text-[10px] tracking-widest uppercase font-semibold text-[var(--accent)]">Sumber Data</p>
+            <div class="flex flex-wrap items-center gap-3 sm:gap-4">
+              <div class="bg-white/90 hover:bg-white transition-colors duration-300 p-1.5 rounded-lg shadow-sm">
+                <img src="/diskominfo.png" alt="Diskominfo Bogor" class="h-6 sm:h-7 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300" title="Diskominfo Bogor" />
+              </div>
+              <div class="bg-white/90 hover:bg-white transition-colors duration-300 p-1.5 rounded-lg shadow-sm">
+                <img src="/jasamarga.png" alt="Jasa Marga" class="h-6 sm:h-7 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300" title="Jasa Marga" />
+              </div>
+              <div class="bg-white/90 hover:bg-white transition-colors duration-300 p-1.5 rounded-lg shadow-sm">
+                <img src="/bmkg.png" alt="BMKG" class="h-6 sm:h-7 object-contain opacity-90 hover:opacity-100 transition-opacity duration-300" title="Badan Meteorologi, Klimatologi, dan Geofisika" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="mt-16 pt-8 border-t border-white/20 flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-4 transition-colors duration-300">
-        <p class="text-[11px] tracking-wider uppercase font-medium text-white/60">
+      <div class="mt-12 pt-6 border-t border-white/20 flex flex-col sm:flex-row items-center justify-between gap-4 transition-colors duration-300">
+        <p class="text-[10px] sm:text-[11px] tracking-wider uppercase font-medium text-white/80">
           &copy; {{ new Date().getFullYear() }} Bogor Live. All rights reserved.
+        </p>
+        <p class="text-[10px] sm:text-[11px] font-medium text-white/80">
+          Built with <span class="text-[var(--accent)] font-bold">Passion</span> by <span class="text-white">Bayu Praditya</span>
         </p>
       </div>
     </div>

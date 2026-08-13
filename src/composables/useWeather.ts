@@ -119,7 +119,8 @@ export function useWeather() {
           windSpeed: currentData.ws,
           visibility: currentData.vs_text,
           forecast: forecast,
-          updatedAt: new Date().toISOString()
+          // Use BMKG local forecast time as the freshness indicator
+          updatedAt: currentData.local_datetime || new Date().toISOString()
         }
         
         // 4. Update State and Cache

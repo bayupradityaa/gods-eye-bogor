@@ -10,6 +10,7 @@ import CameraViewer from '@/components/cameras/CameraViewer.vue'
 import CommandPalette from '@/components/ui/CommandPalette.vue'
 import CameraMap from '@/components/map/CameraMap.vue'
 import CityStats from '@/components/hero/CityStats.vue'
+import WeatherTicker from '@/components/weather/WeatherTicker.vue'
 import MyMonitoring from '@/components/monitoring/MyMonitoring.vue'
 import Footer from '@/components/layout/Footer.vue'
 
@@ -57,7 +58,10 @@ function handleClearSearch() {
     <main>
       <HeroSection @select="openCamera" />
       
-      <div class="mb-8">
+      <!-- Weather Ticker (Subtle Status Strip) -->
+      <WeatherTicker />
+      
+      <div class="mb-8 mt-4">
         <CityStats />
       </div>
 

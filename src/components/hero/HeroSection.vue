@@ -19,6 +19,25 @@ const emit = defineEmits<{
 // ─── Weather ───
 const { weather, loading: weatherLoading, error: weatherError, fetchWeather } = useWeather()
 
+function formatUpdatedAt(dateStr: string | undefined): string {
+  if (!dateStr) return '';
+  if (dateStr.includes(' ')) {
+    const timePart = dateStr.split(' ')[1];
+    if (timePart) {
+      const [h, m] = timePart.split(':');
+      return `${h}:${m} WIB`;
+    }
+  }
+  try {
+    const d = new Date(dateStr);
+    const h = d.getHours().toString().padStart(2, '0');
+    const m = d.getMinutes().toString().padStart(2, '0');
+    return `${h}:${m} WIB`;
+  } catch {
+    return '';
+  }
+}
+
 // ─── Live Timestamp ───
 const liveTime = ref('')
 let timeInterval: ReturnType<typeof setInterval> | null = null
@@ -401,24 +420,36 @@ onUnmounted(() => {
                 </div>
                 
                 <!-- Weather Telemetry (Terminal Style) -->
-                <div class="flex flex-wrap items-center gap-2 sm:gap-3 text-[10px] sm:text-xs font-medium text-white/70 font-mono bg-white/5 px-2.5 py-1.5 border border-white/10 rounded-md shrink-0 min-h-[34px] transition-all duration-300">
-                  <template v-if="weatherLoading">
-                    <span class="text-white/40 italic">--° Memuat cuaca...</span>
-                  </template>
-                  <template v-else-if="weatherError">
-                    <span class="text-[var(--danger,red)] italic uppercase">Cuaca Tidak Tersedia</span>
-                  </template>
-                  <template v-else-if="weather">
-                    <span class="text-[var(--accent)] font-bold text-sm leading-none">{{ weather.temperature }}°</span>
-                    <span class="uppercase">{{ weather.weatherDescription }}</span>
-                    <span class="text-white/20 hidden sm:inline">/</span>
-                    <span class="hidden sm:inline">HUM {{ weather.humidity }}%</span>
-                    <span class="text-white/20 hidden sm:inline">/</span>
-                    <span class="hidden sm:inline">WND {{ weather.windSpeed }}</span>
-                  </template>
-                  <template v-else>
-                    <span class="text-white/40 italic uppercase">Lokasi tidak diketahui</span>
-                  </template>
+                <div class="flex flex-col items-start sm:items-end gap-1.5 shrink-0 transition-all duration-300">
+                  <div class="flex flex-wrap items-center gap-2 sm:gap-3 text-[10px] sm:text-xs font-medium text-white/70 font-mono bg-white/5 px-2.5 py-1.5 border border-white/10 rounded-md min-h-[34px]">
+                    <template v-if="weatherLoading">
+                      <span class="text-white/40 italic">--° Memuat cuaca...</span>
+                    </template>
+                    <template v-else-if="weatherError && !weather">
+                      <span class="text-[var(--danger,red)] italic uppercase">Cuaca Tidak Tersedia</span>
+                    </template>
+                    <template v-else-if="weather">
+                      <span class="text-[var(--accent)] font-bold text-sm leading-none">{{ weather.temperature }}°</span>
+                      <span class="uppercase">{{ weather.weatherDescription }}</span>
+                      <span class="text-white/20 hidden sm:inline">/</span>
+                      <span class="hidden sm:inline">HUM {{ weather.humidity }}%</span>
+                      <span class="text-white/20 hidden sm:inline">/</span>
+                      <span class="hidden sm:inline">WND {{ weather.windSpeed }}</span>
+                    </template>
+                    <template v-else>
+                      <span class="text-white/40 italic uppercase">Lokasi tidak diketahui</span>
+                    </template>
+                  </div>
+                  
+                  <!-- Weather Metadata / Timestamp -->
+                  <div 
+                    v-if="weather || weatherError" 
+                    class="text-[9px] text-white/40 font-mono tracking-wider uppercase cursor-help hover:text-white/70 transition-colors px-1"
+                    title="Prakiraan cuaca dari BMKG. Data diperbarui secara berkala dan dapat berbeda dari kondisi aktual di kamera."
+                  >
+                    <span v-if="weatherError && weather">BMKG · Data terakhir tersedia</span>
+                    <span v-else-if="weather">BMKG · {{ formatUpdatedAt(weather.updatedAt) || 'Data prakiraan' }}</span>
+                  </div>
                 </div>
               </div>
 
