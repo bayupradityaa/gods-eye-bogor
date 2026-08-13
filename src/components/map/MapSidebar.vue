@@ -44,6 +44,7 @@ function handleSelect(cam: Camera) {
           @input="e => setSearch((e.target as HTMLInputElement).value)"
           type="text" 
           placeholder="Cari lokasi atau ID..."
+          aria-label="Cari lokasi atau ID kamera"
           class="w-full rounded-xl pl-9 pr-4 py-2.5 text-sm focus:outline-none transition-colors"
           style="background: var(--bg-secondary); border: 1px solid var(--border); color: var(--text);"
         />
@@ -54,6 +55,7 @@ function handleSelect(cam: Camera) {
         <select
           :value="activeCategory"
           @change="e => setCategory((e.target as HTMLSelectElement).value as FilterCategory)"
+          aria-label="Kategori Kamera"
           class="w-full appearance-none rounded-xl pl-4 pr-10 py-2.5 text-sm focus:outline-none transition-colors cursor-pointer"
           style="background: var(--bg-secondary); border: 1px solid var(--border); color: var(--text);"
         >

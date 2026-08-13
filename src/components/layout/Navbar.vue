@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
-import { Sun, Moon, Menu, X } from '@lucide/vue'
+import { Sun, Moon, Menu, X, Download } from '@lucide/vue'
 import { useTheme } from '@/composables/useTheme'
+import { usePwaInstall } from '@/composables/usePwaInstall'
 import gsap from 'gsap'
 
 const emit = defineEmits<{
@@ -9,6 +10,7 @@ const emit = defineEmits<{
 }>()
 
 const { isDark, toggleTheme } = useTheme()
+const { isInstallable, promptInstall } = usePwaInstall()
 
 const scrolled = ref(false)
 const mobileMenuOpen = ref(false)
@@ -108,6 +110,17 @@ onUnmounted(() => {
 
       <!-- Right Controls -->
       <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+        
+        <!-- PWA Install Button -->
+        <button
+          v-if="isInstallable"
+          @click="promptInstall"
+          class="nav-anim-item hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[var(--accent)] bg-[var(--accent)]/10 text-[var(--accent)] hover:bg-[var(--accent)] hover:text-white transition-all text-xs font-bold uppercase tracking-wide"
+        >
+          <Download :size="14" />
+          Install App
+        </button>
+
         <!-- Search -->
         <button
           class="nav-anim-item search-btn group hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full border bg-transparent transition-colors"
@@ -189,6 +202,14 @@ onUnmounted(() => {
         <a href="#cameras" class="text-xs tracking-[0.2em] font-semibold uppercase" :class="activeSection === 'cameras' ? 'text-[var(--primary)]' : 'text-[var(--text)]'" @click="closeMobileMenu">Kamera</a>
         <a href="#map" class="text-xs tracking-[0.2em] font-semibold uppercase" :class="activeSection === 'map' ? 'text-[var(--primary)]' : 'text-[var(--text)]'" @click="closeMobileMenu">Peta</a>
         <a href="#watchlist" class="text-xs tracking-[0.2em] font-semibold uppercase" :class="activeSection === 'watchlist' ? 'text-[var(--primary)]' : 'text-[var(--text)]'" @click="closeMobileMenu">Pantauan Saya</a>
+        <button 
+          v-if="isInstallable"
+          @click="() => { promptInstall(); closeMobileMenu(); }"
+          class="flex items-center justify-between text-xs tracking-[0.2em] font-semibold uppercase text-[var(--accent)] text-left"
+        >
+          <span>Install App</span>
+          <Download :size="16" />
+        </button>
       </nav>
       <div class="pt-6 border-t flex items-center justify-between" style="border-color: var(--border);">
         <div class="flex items-center h-full">
