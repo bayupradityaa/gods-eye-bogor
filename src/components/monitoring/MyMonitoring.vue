@@ -45,7 +45,7 @@ onMounted(() => {
               <Star :size="16" :stroke-width="2" style="color: var(--text-muted);" />
             </div>
             <div>
-              <p class="text-sm font-semibold tracking-wide uppercase" style="color: var(--text);">My Monitoring</p>
+              <p class="text-sm font-semibold tracking-wide uppercase" style="color: var(--text);">Pantauan Saya</p>
               <p class="text-[13px] mt-0.5" style="color: var(--text-secondary);">
                 Simpan kamera yang sering kamu pantau untuk akses lebih cepat.
               </p>
@@ -56,7 +56,7 @@ onMounted(() => {
             class="explore-cta shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wide cursor-pointer border"
             style="background: var(--surface); border-color: var(--border); color: var(--text);"
           >
-            Explore Cameras
+            Jelajahi Kamera
             <span class="text-sm">→</span>
           </a>
         </div>
@@ -65,9 +65,9 @@ onMounted(() => {
       <!-- Has Content -->
       <template v-else>
         <div class="mb-8">
-          <p class="text-[10px] sm:text-xs tracking-[0.2em] uppercase mb-2 font-medium" style="color: var(--text-muted);">Personalized</p>
+          <p class="text-[10px] sm:text-xs tracking-[0.2em] uppercase mb-2 font-medium" style="color: var(--text-muted);">Personal</p>
           <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight" style="color: var(--text);">
-            My Monitoring
+            Pantauan Saya
           </h2>
         </div>
 
@@ -77,7 +77,7 @@ onMounted(() => {
             <div class="flex items-center gap-2 mb-4">
               <Star :size="14" :stroke-width="2" style="color: var(--accent);" />
               <span class="text-[10px] sm:text-xs tracking-wider uppercase font-semibold" style="color: var(--text-secondary);">
-                Favorites · {{ favoriteCameraList.length }}
+                Favorit · {{ favoriteCameraList.length }}
               </span>
             </div>
             <div class="monitoring-scroll flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 sm:-mx-0 sm:px-0">
@@ -96,7 +96,7 @@ onMounted(() => {
             <div class="flex items-center gap-2 mb-4">
               <Clock :size="14" :stroke-width="2" style="color: var(--text-muted);" />
               <span class="text-[10px] sm:text-xs tracking-wider uppercase font-semibold" style="color: var(--text-secondary);">
-                Recently Viewed
+                Terakhir Dilihat
               </span>
             </div>
             <div class="flex flex-col gap-2">

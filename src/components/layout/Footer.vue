@@ -13,7 +13,7 @@
               BOGOR LIVE<span style="color: var(--accent);">.</span>
             </h2>
             <p class="text-xs tracking-[0.2em] uppercase font-medium mt-1" style="color: var(--text-muted);">
-              A digital window into Kota Bogor
+              Jendela digital menuju Kota Bogor
             </p>
           </div>
           <p class="text-sm max-w-xs leading-relaxed" style="color: var(--text-secondary);">
@@ -26,14 +26,14 @@
           <div class="space-y-4">
             <p class="text-[10px] tracking-widest uppercase font-semibold" style="color: var(--text-muted);">Platform</p>
             <ul class="space-y-3">
-              <li><a href="#explorer" class="footer-link text-sm">Cameras</a></li>
-              <li><a href="#map" class="footer-link text-sm">Interactive Map</a></li>
-              <li><a href="#" class="footer-link text-sm">My Monitoring</a></li>
+              <li><a href="#explorer" class="footer-link text-sm">Kamera</a></li>
+              <li><a href="#map" class="footer-link text-sm">Peta Interaktif</a></li>
+              <li><a href="#" class="footer-link text-sm">Pantauan Saya</a></li>
             </ul>
           </div>
           
           <div class="space-y-4">
-            <p class="text-[10px] tracking-widest uppercase font-semibold" style="color: var(--text-muted);">Data Source</p>
+            <p class="text-[10px] tracking-widest uppercase font-semibold" style="color: var(--text-muted);">Sumber Data</p>
             <ul class="space-y-3">
               <li><span class="text-sm" style="color: var(--text-secondary);">Diskominfo Bogor</span></li>
               <li><span class="text-sm" style="color: var(--text-secondary);">Jasa Marga</span></li>

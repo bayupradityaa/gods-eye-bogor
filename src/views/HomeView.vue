@@ -16,6 +16,7 @@ import Footer from '@/components/layout/Footer.vue'
 const {
   filteredCameras, activeCategory, searchQuery,
   viewerOpen, selectedCamera,
+  totalResults, canLoadMore, loadMore,
   setCategory, setSearch, openCamera, closeViewer,
 } = useCameras()
 
@@ -31,6 +32,11 @@ function onKeydown(e: KeyboardEvent) {
 
 onMounted(() => document.addEventListener('keydown', onKeydown))
 onUnmounted(() => document.removeEventListener('keydown', onKeydown))
+
+function handleClearSearch() {
+  setSearch('')
+  setCategory('all')
+}
 </script>
 
 <template>
@@ -55,7 +61,13 @@ onUnmounted(() => document.removeEventListener('keydown', onKeydown))
         <CameraFilters :active="activeCategory" @change="setCategory" />
         
         <div class="mt-8">
-          <CameraGrid :cameras="filteredCameras" @select="openCamera" />
+          <CameraGrid 
+            :cameras="filteredCameras" 
+            :total="totalResults"
+            :canLoadMore="canLoadMore"
+            @select="(cam) => cam ? openCamera(cam) : handleClearSearch()" 
+            @loadMore="loadMore"
+          />
         </div>
       </section>
 

@@ -96,7 +96,7 @@ onMounted(() => {
           <!-- CTA -->
           <div class="hero-cta-group flex flex-wrap items-center gap-4 pt-2">
             <a href="#explorer" class="cta-primary inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl text-sm font-semibold tracking-wide uppercase transition-all duration-300">
-              Explore Cameras
+              Jelajahi Kamera
               <span class="text-lg leading-none">→</span>
             </a>
           </div>
@@ -128,7 +128,7 @@ onMounted(() => {
               <span class="text-[9px] tracking-[0.2em] uppercase font-bold text-white">LIVE</span>
             </div>
             <div class="text-right">
-              <p class="text-[10px] tracking-widest text-white/70 uppercase mb-0.5">West Java</p>
+              <p class="text-[10px] tracking-widest text-white/70 uppercase mb-0.5">Jawa Barat</p>
               <p class="text-[10px] tracking-widest text-white/50 tabular-nums">06°35′S 106°48′E</p>
             </div>
           </div>

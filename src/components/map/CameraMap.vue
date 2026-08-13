@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, onUnmounted } from 'vue'
-import { Map as MapLibreMap, Marker, Popup, NavigationControl, type RasterTileSource } from 'maplibre-gl'
+import { Map as MapLibreMap, Marker, Popup, NavigationControl, type RasterTileSource, type Map as MapType, type Marker as MarkerType } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { CAMERAS } from '@/data/cameras'
 import type { Camera } from '@/types/camera'
@@ -22,7 +22,7 @@ const emit = defineEmits<{
 
 const mapContainer = ref<HTMLElement | null>(null)
 const mapSection = ref<HTMLElement | null>(null)
-const map = ref<MapLibreMap | null>(null)
+const map = ref<MapType | null>(null)
 const { theme } = useTheme()
 
 // Kota Bogor center coordinates
@@ -34,7 +34,7 @@ const TILE_URLS = {
 }
 
 // Track markers for filtering
-const markers = ref<{ marker: Marker; camera: Camera; el: HTMLElement }[]>([])
+const markers = ref<{ marker: MarkerType; camera: Camera; el: HTMLElement }[]>([])
 
 function getPopupHTML(cam: Camera): string {
   const currentTheme = theme.value
@@ -56,7 +56,7 @@ function getPopupHTML(cam: Camera): string {
           <span style="color:${accent};font-size:9px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;">Live</span>
         </div>
         <button data-cam-id="${cam.id}" class="map-view-btn" style="background:${btnBg};color:${btnText};border:none;padding:6px 14px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;letter-spacing:0.02em;transition:transform 0.15s, opacity 0.15s;">
-          View
+          Lihat
         </button>
       </div>
     </div>
@@ -237,7 +237,7 @@ onUnmounted(() => {
 <template>
   <section id="map" ref="mapSection" class="relative layout-container py-16 sm:py-24">
     <div class="map-header mb-12">
-      <p class="text-[10px] sm:text-xs tracking-[0.2em] uppercase mb-2 font-medium" style="color: var(--text-muted);">Explore Bogor</p>
+      <p class="text-[10px] sm:text-xs tracking-[0.2em] uppercase mb-2 font-medium" style="color: var(--text-muted);">Jelajahi Bogor</p>
       <h2 class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight" style="color: var(--text);">
         Peta Kamera
       </h2>

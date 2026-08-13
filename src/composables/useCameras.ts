@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { CAMERAS } from '@/data/cameras'
 import type { Camera, FilterCategory } from '@/types/camera'
 import { useCameraPreferences } from './useCameraPreferences'
@@ -8,10 +8,13 @@ const searchQuery = ref('')
 const selectedCamera = ref<Camera | null>(null)
 const viewerOpen = ref(false)
 
+const INITIAL_LIMIT = 24
+const displayLimit = ref(INITIAL_LIMIT)
+
 export function useCameras() {
   const { addRecent } = useCameraPreferences()
 
-  const filteredCameras = computed(() => {
+  const allFiltered = computed(() => {
     return CAMERAS.filter((cam) => {
       if (activeCategory.value !== 'all' && cam.category !== activeCategory.value) return false
       if (searchQuery.value) {
@@ -23,6 +26,23 @@ export function useCameras() {
       }
       return true
     })
+  })
+
+  const filteredCameras = computed(() => {
+    return allFiltered.value.slice(0, displayLimit.value)
+  })
+
+  const totalResults = computed(() => allFiltered.value.length)
+  
+  const canLoadMore = computed(() => displayLimit.value < totalResults.value)
+
+  function loadMore() {
+    displayLimit.value += 24
+  }
+
+  // Reset limit when filters change
+  watch([activeCategory, searchQuery], () => {
+    displayLimit.value = INITIAL_LIMIT
   })
 
   const categoryCounts = computed(() => {
@@ -55,6 +75,9 @@ export function useCameras() {
   return {
     cameras: CAMERAS,
     filteredCameras,
+    totalResults,
+    canLoadMore,
+    loadMore,
     activeCategory,
     searchQuery,
     categoryCounts,

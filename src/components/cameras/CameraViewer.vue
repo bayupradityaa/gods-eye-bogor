@@ -166,7 +166,7 @@ onUnmounted(() => {
               class="absolute inset-0 flex flex-col items-center justify-center bg-[#0C1017]"
             >
               <div class="w-8 h-8 border-2 border-white/20 border-t-green-500 rounded-full animate-spin mb-4"></div>
-              <p class="text-[10px] tracking-[0.2em] uppercase text-white/50">Connecting to stream...</p>
+              <p class="text-[10px] tracking-[0.2em] uppercase text-white/50">Menghubungkan ke kamera...</p>
             </div>
 
             <!-- Error State -->
@@ -175,12 +175,12 @@ onUnmounted(() => {
               class="absolute inset-0 flex flex-col items-center justify-center bg-[#0C1017]"
             >
               <span class="text-3xl mb-3 opacity-30 text-red-500">⚠</span>
-              <p class="text-xs tracking-wider text-white">Stream unavailable</p>
+              <p class="text-xs tracking-wider text-white">Kamera tidak tersedia</p>
               <button
                 class="mt-4 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-[10px] tracking-widest uppercase text-white transition-colors border border-white/10"
                 @click="initStream"
               >
-                Retry Connection
+                Coba Lagi
               </button>
             </div>
           </div>
