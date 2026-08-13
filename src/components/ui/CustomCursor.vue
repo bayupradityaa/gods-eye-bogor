@@ -43,15 +43,37 @@ onUnmounted(() => {
     v-if="isVisible"
     class="fixed pointer-events-none z-[9999] transition-all duration-[200ms]"
     :class="[
-      isHovering ? 'w-12 h-12 -ml-6 -mt-6 border border-white/20 bg-white/5 rounded-full' : 'w-2 h-2 -ml-1 -mt-1 bg-accent rounded-full',
+      isHovering ? 'cursor-hover' : 'cursor-dot',
     ]"
     :style="{ left: `${x}px`, top: `${y}px` }"
   >
     <div
       v-if="isHovering"
-      class="absolute inset-0 flex items-center justify-center text-[9px] text-white/60 tracking-widest uppercase font-medium"
+      class="absolute inset-0 flex items-center justify-center text-[9px] tracking-widest uppercase font-medium"
+      :style="{ color: 'var(--cursor-hover-text)' }"
     >
       View
     </div>
   </div>
 </template>
+
+<style scoped>
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  margin-top: -4px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+.cursor-hover {
+  width: 48px;
+  height: 48px;
+  margin-left: -24px;
+  margin-top: -24px;
+  border: 1px solid var(--cursor-hover-border);
+  background: var(--cursor-hover-bg);
+  border-radius: 50%;
+}
+</style>

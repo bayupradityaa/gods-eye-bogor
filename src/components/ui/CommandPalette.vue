@@ -65,20 +65,26 @@ function onKeydown(e: KeyboardEvent) {
       leave-from-class="opacity-100"
       leave-to-class="opacity-0"
     >
-      <div v-if="open" class="fixed inset-0 z-[200] bg-black/70 backdrop-blur-sm flex items-start justify-center pt-[15vh]" @click="emit('close')">
+      <div
+        v-if="open"
+        class="fixed inset-0 z-[200] backdrop-blur-sm flex items-start justify-center pt-[15vh]"
+        :style="{ background: 'var(--palette-backdrop)' }"
+        @click="emit('close')"
+      >
         <div
-          class="w-full max-w-lg bg-[#11161F] rounded-2xl border border-white/[0.08] shadow-2xl overflow-hidden"
+          class="palette-container w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden"
           @click.stop
         >
           <!-- Search input -->
-          <div class="relative border-b border-white/[0.06]">
-            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-base z-10">⌕</span>
+          <div class="palette-search relative">
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-base z-10" style="color: var(--text-muted);">⌕</span>
             <input
               ref="inputRef"
               v-model="query"
               type="text"
               placeholder="Search cameras..."
-              class="w-full px-4 py-4 pl-11 pr-4 bg-transparent text-sm text-white placeholder:text-text-muted/50 outline-none"
+              class="palette-input w-full px-4 py-4 pl-11 pr-4 bg-transparent text-sm outline-none"
+              :style="{ color: 'var(--text)' }"
               @keydown="onKeydown"
             />
           </div>
@@ -88,33 +94,33 @@ function onKeydown(e: KeyboardEvent) {
             <button
               v-for="(cam, i) in results"
               :key="cam.id"
-              class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors cursor-pointer"
-              :class="i === selectedIndex ? 'bg-accent/10 border border-accent/15' : 'hover:bg-white/[0.03] border border-transparent'"
+              class="palette-result w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left cursor-pointer"
+              :class="{ 'palette-result-active': i === selectedIndex }"
               @click="emit('select', cam)"
               @mouseenter="selectedIndex = i"
             >
               <div class="flex-1 min-w-0">
-                <p class="text-sm text-white truncate" :class="{ 'text-accent': i === selectedIndex }">
+                <p class="text-sm truncate" :style="{ color: i === selectedIndex ? 'var(--accent)' : 'var(--text)' }">
                   {{ cam.name }}
                 </p>
-                <p class="text-[11px] text-text-muted mt-0.5">
+                <p class="text-[11px] mt-0.5" style="color: var(--text-muted);">
                   {{ formatId(cam.id) }} · <span :style="{ color: CATEGORY_COLORS[cam.category] }">{{ cam.category }}</span>
                 </p>
               </div>
               <div class="flex items-center gap-1.5 shrink-0">
-                <span class="w-1.5 h-1.5 rounded-full bg-accent/60"></span>
-                <span class="text-[10px] text-text-muted uppercase tracking-wider">Live</span>
+                <span class="w-1.5 h-1.5 rounded-full" style="background: var(--accent); opacity: 0.6;"></span>
+                <span class="text-[10px] uppercase tracking-wider" style="color: var(--text-muted);">Live</span>
               </div>
             </button>
 
             <div v-if="results.length === 0" class="py-8 text-center">
-              <p class="text-sm text-text-muted">No cameras found</p>
-              <p class="text-xs text-text-muted/50 mt-1">Try a different search</p>
+              <p class="text-sm" style="color: var(--text-muted);">No cameras found</p>
+              <p class="text-xs mt-1" style="color: var(--text-muted); opacity: 0.5;">Try a different search</p>
             </div>
           </div>
 
           <!-- Footer -->
-          <div class="px-4 py-2.5 border-t border-white/[0.04] flex items-center gap-4 text-[10px] text-text-muted">
+          <div class="palette-footer px-4 py-2.5 flex items-center gap-4 text-[10px]" style="color: var(--text-muted);">
             <span>↑↓ Navigate</span>
             <span>↵ Open</span>
             <span>ESC Close</span>
@@ -124,3 +130,35 @@ function onKeydown(e: KeyboardEvent) {
     </Transition>
   </Teleport>
 </template>
+
+<style scoped>
+.palette-container {
+  background: var(--palette-bg);
+  border: 1px solid var(--palette-border);
+}
+
+.palette-search {
+  border-bottom: 1px solid var(--border);
+}
+
+.palette-input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.palette-result {
+  transition: background 150ms ease;
+  border: 1px solid transparent;
+}
+.palette-result:hover {
+  background: var(--palette-hover);
+}
+.palette-result-active {
+  background: var(--accent-soft);
+  border-color: var(--filter-active-border);
+}
+
+.palette-footer {
+  border-top: 1px solid var(--border);
+}
+</style>

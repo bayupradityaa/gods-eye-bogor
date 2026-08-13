@@ -9,8 +9,18 @@
     <meta property="og:title" content="Bogor Live - CCTV Kota Bogor" />
     <meta property="og:description" content="Pantau kondisi Kota Bogor secara langsung melalui jaringan kamera publik." />
     <meta property="og:image" content="/og-image.png" />
-    <meta name="theme-color" content="#07090D" />
+    <meta name="theme-color" content="#F7F8FA" />
     <title>Bogor Live — CCTV Kota Bogor</title>
+    <!-- Anti-flicker: apply theme before any render -->
+    <script>
+      (function() {
+        var t = localStorage.getItem('bogor-live-theme');
+        if (t !== 'light' && t !== 'dark') t = 'light';
+        document.documentElement.setAttribute('data-theme', t);
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', t === 'dark' ? '#07090D' : '#F7F8FA');
+      })();
+    </script>
   </head>
   <body>
     <div id="app"></div>

@@ -10,7 +10,7 @@ import CameraViewer from '@/components/cameras/CameraViewer.vue'
 import CommandPalette from '@/components/ui/CommandPalette.vue'
 import CameraMap from '@/components/map/CameraMap.vue'
 import CityStats from '@/components/hero/CityStats.vue'
-import CityPulse from '@/components/hero/CityPulse.vue'
+import MyMonitoring from '@/components/monitoring/MyMonitoring.vue'
 import Footer from '@/components/layout/Footer.vue'
 
 const {
@@ -34,25 +34,34 @@ onUnmounted(() => document.removeEventListener('keydown', onKeydown))
 </script>
 
 <template>
-  <div class="min-h-screen">
+  <div class="min-h-screen" style="background: var(--bg);">
     <Navbar @open-search="showCommandPalette = true" />
     <main>
       <HeroSection />
       <CityStats />
-      <section id="explorer" class="relative z-10 px-4 sm:px-6 lg:px-8 pb-20">
-        <div class="max-w-7xl mx-auto">
-          <div class="mb-10">
-            <p class="text-xs tracking-[0.2em] uppercase text-accent mb-3 font-medium">Explore Bogor</p>
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-white">Jelajahi Kamera Publik</h2>
-            <p class="mt-3 text-text-secondary max-w-xl text-sm sm:text-base">Temukan kamera publik di berbagai titik Kota Bogor.</p>
-          </div>
-          <CameraSearch :query="searchQuery" @update:query="setSearch" @open-palette="showCommandPalette = true" />
-          <CameraFilters :active="activeCategory" @change="setCategory" />
+
+      <!-- My Monitoring: favorites + recently viewed -->
+      <MyMonitoring @select="openCamera" />
+
+      <!-- CCTV Explorer -->
+      <section id="explorer" class="relative z-10 layout-container py-16 sm:py-24">
+        <div class="mb-12">
+          <p class="text-[10px] sm:text-xs tracking-[0.2em] uppercase mb-2 font-medium" style="color: var(--text-muted);">Camera Explorer</p>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight" style="color: var(--text);">Jelajahi Kamera Publik</h2>
+          <p class="mt-3 max-w-xl text-[15px] sm:text-base leading-relaxed" style="color: var(--text-secondary);">Temukan dan pantau kamera publik di berbagai titik Kota Bogor.</p>
+        </div>
+        
+        <CameraSearch :query="searchQuery" @update:query="setSearch" @open-palette="showCommandPalette = true" />
+        <CameraFilters :active="activeCategory" @change="setCategory" />
+        
+        <div class="mt-8">
           <CameraGrid :cameras="filteredCameras" @select="openCamera" />
         </div>
       </section>
-      <CameraMap />
-      <CityPulse />
+
+      <!-- Interactive Map — synced with category filter -->
+      <CameraMap :active-category="activeCategory" @select="openCamera" />
+
       <CameraViewer :open="viewerOpen" :camera="selectedCamera" @close="closeViewer" />
       <CommandPalette :open="showCommandPalette" @close="showCommandPalette = false" @select="(cam) => { showCommandPalette = false; openCamera(cam) }" />
     </main>

@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue'
 import { CAMERAS } from '@/data/cameras'
 import type { Camera, FilterCategory } from '@/types/camera'
+import { useCameraPreferences } from './useCameraPreferences'
 
 const activeCategory = ref<FilterCategory>('all')
 const searchQuery = ref('')
@@ -8,6 +9,8 @@ const selectedCamera = ref<Camera | null>(null)
 const viewerOpen = ref(false)
 
 export function useCameras() {
+  const { addRecent } = useCameraPreferences()
+
   const filteredCameras = computed(() => {
     return CAMERAS.filter((cam) => {
       if (activeCategory.value !== 'all' && cam.category !== activeCategory.value) return false
@@ -39,6 +42,7 @@ export function useCameras() {
   }
 
   function openCamera(camera: Camera) {
+    addRecent(camera.id)
     selectedCamera.value = camera
     viewerOpen.value = true
   }
