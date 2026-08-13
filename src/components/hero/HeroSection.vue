@@ -371,9 +371,9 @@ onUnmounted(() => {
         </div>
 
         <!-- Right: Viewport Instrument -->
-        <div class="lg:col-span-6 lg:col-start-7 w-full">
+        <div class="lg:col-span-6 lg:col-start-7 w-full min-w-0">
           <div 
-            class="hero-visual-card group/card w-full flex flex-col bg-[#0F293E] border border-[var(--border-strong)] rounded-lg overflow-hidden shadow-lg transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1"
+            class="hero-visual-card group/card w-full flex flex-col bg-[#0F293E] border border-[var(--border-strong)] rounded-lg overflow-hidden shadow-lg transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 min-w-0"
             @mouseenter="onCardHover"
             @mouseleave="onCardLeave"
             @click="onCardClick"
